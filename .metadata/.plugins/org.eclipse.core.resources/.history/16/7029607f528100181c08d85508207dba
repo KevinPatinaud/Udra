@@ -1,0 +1,162 @@
+package graphique;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+
+import udra.Udra;
+import udra.udra_value;
+
+
+
+
+
+// Cette classe représente l'ensemble de la fenetre
+
+public class Drawing_Relief_Map extends JFrame{
+
+	private Udra_Relief_Panel panel;
+	
+	
+	// At the creation we can choose to display or not the frame
+	public Drawing_Relief_Map(Udra udraToDraw , String colorMinValue , String colorMaxValue )
+	{
+
+		setSize(800 , 500 );
+		setLocationRelativeTo(null);
+		setVisible(true);
+		
+		// The panel is the graphical zone of the frame
+		panel = new Udra_Relief_Panel( udraToDraw , colorMinValue , colorMaxValue);
+		setContentPane(panel);
+		
+	}
+	
+	
+	
+	
+	
+	public static Udra calculColorMapping( Udra udraToConvert , String colorMinValue , String colorMaxValue)
+	{
+		Udra listOfValue = new Udra ("Values");
+		
+		//Get the value each case of udra to convert
+		for (int x = 1 ; x < udraToConvert.sizeColumn() ; x ++ )
+		{
+			for (int y = 0 ; y < udraToConvert.sizeRow() ; y++)
+			{
+				listOfValue.insertALine(udraToConvert.getDbl(x, y));
+			}
+		}
+		
+		//Insure the unicity of each value
+		listOfValue.delete_duplicate_row();
+		
+		//order the values
+		listOfValue.orderAscBy(0);
+		
+		//Calcul the color for each value
+		colorMinValue = colorMinValue.replace("#", "");
+		double RedValMin = Integer.parseInt(String.valueOf( colorMinValue.charAt(0) ) +  String.valueOf(colorMinValue.charAt(1)),16);  
+		double GreenValMin = Integer.parseInt(String.valueOf( colorMinValue.charAt(1) ) +  String.valueOf(colorMinValue.charAt(2)),16);  
+		double BlueValMin = Integer.parseInt(String.valueOf( colorMinValue.charAt(3) ) +  String.valueOf(colorMinValue.charAt(4)),16);  
+
+
+		colorMaxValue = colorMaxValue.replace("#", "");
+		double RedValMax = Integer.parseInt(String.valueOf( colorMaxValue.charAt(0) ) +  String.valueOf(colorMaxValue.charAt(1)),16);  
+		double GreenValMax = Integer.parseInt(String.valueOf( colorMaxValue.charAt(1) ) +  String.valueOf(colorMaxValue.charAt(2)),16);  
+		double BlueValMax = Integer.parseInt(String.valueOf( colorMaxValue.charAt(3) ) +  String.valueOf(colorMaxValue.charAt(4)),16);
+		
+		listOfValue.insertAColumn("COLOR");
+		
+		for (int i = 0 ; i < listOfValue.sizeRow() ; i++)
+		{
+
+			 System.out.println( RedValMin );
+			 System.out.println( RedValMax );
+			 System.out.println( ( (double) i ) / listOfValue.sizeRow() );
+			 System.out.println(( RedValMin - RedValMax) * ( (  (double) i ) / listOfValue.sizeRow()));
+			 System.out.println( RedValMin );
+			 System.out.println( Math.abs( RedValMin - RedValMax) * ( (  (double) i ) / ( listOfValue.sizeRow() - 1 )) + RedValMin ) ;
+			 
+
+			 int codeRed = 0;
+			 if ( RedValMin < RedValMax)
+				 codeRed = (int) ( Math.abs( RedValMin - RedValMax) * ( ( (double) i) / (listOfValue.sizeRow() - 1)) + RedValMin );
+			 else
+				 codeRed = (int) ( Math.abs( RedValMin - RedValMax) * ( 1 - (( (double) i) / (listOfValue.sizeRow() - 1))) + RedValMax );
+
+			 
+
+			 int codeGreen = 0;
+			 if ( GreenValMin < RedValMax)
+				 codeGreen = (int) ( Math.abs( GreenValMin - GreenValMax) * ( ( (double) i) / (listOfValue.sizeRow() - 1)) + GreenValMin );
+			 else
+				 codeGreen = (int) ( Math.abs( GreenValMin - GreenValMax) * ( 1 - (( (double) i) / (listOfValue.sizeRow() - 1))) + GreenValMax );
+			 
+
+			 
+
+			 int codeBlue = 0;
+			 if ( BlueValMin < RedValMax)
+				 codeGreen = (int) ( Math.abs( BlueValMin - BlueValMax) * ( ( (double) i) / (listOfValue.sizeRow() - 1)) + BlueValMin );
+			 else
+				 codeGreen = (int) ( Math.abs( BlueValMin - BlueValMax) * ( 1 - (( (double) i) / (listOfValue.sizeRow() - 1))) + BlueValMax );
+			 
+			 
+			 
+			 
+			 listOfValue.setAvalue("COLOR", i,  new Color( codeRed, codeGreen, codeBlue));
+
+			 System.out.println( "******************************" );
+		}
+		
+	
+		listOfValue.display();
+		
+
+		//Set the color of each case in fonction of is value
+		Udra mappingResult = new Udra();
+		
+		for (int x = 1 ; x < udraToConvert.sizeColumn() ; x ++ )
+		{
+			mappingResult.insertAColumn( udraToConvert.getTitle().get(x) );
+			
+			for (int y = 0 ; y < udraToConvert.sizeRow() ; y++)
+			{
+				//only at the first we add a new line
+				if ( x == 1)
+				{
+					mappingResult.insertALine();
+				}
+				
+				double val = udraToConvert.getDbl(x, y);
+				
+				//find the color of the case
+				for (int iColor = 0 ; iColor < listOfValue.sizeRow() ; iColor++)
+				{
+					if ( listOfValue.getDbl("Values", iColor) == val )
+					{
+						mappingResult.setAvalue(x - 1, y, listOfValue.get("COLOR", iColor) );
+					}
+				}
+				
+			}
+		}
+				
+		
+		return mappingResult;
+	}
+	
+}

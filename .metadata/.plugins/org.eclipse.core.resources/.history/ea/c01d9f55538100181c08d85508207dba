@@ -1,0 +1,36 @@
+package testUdra;
+
+import udra.Udra;
+
+public class mainTestReliefMapLarge {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Udra jdd = new Udra ( );
+
+		int large = 100;
+		int haut = 50;
+		
+		for (int i = 0 ; i < large; i++)
+			jdd.insertAColumn(String.valueOf(i));
+		
+		for (int i = 0 ; i < haut ; i++)
+			jdd.insertALine();
+		
+		for ( int x = 0 ; x < large; x++)
+		{
+			for (int y = 0 ; y < haut; y++)
+			{
+				jdd.setAvalue(x, y, x * y);
+			}
+		}
+		
+		jdd.display();
+		
+
+		
+		jdd.draw_relief_map("#000000" , "#888888");
+	}
+
+}

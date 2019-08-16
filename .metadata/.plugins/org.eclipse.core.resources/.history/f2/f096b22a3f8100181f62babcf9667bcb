@@ -1,0 +1,14 @@
+package testUdra;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Test_Udra_Relief_Map {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}

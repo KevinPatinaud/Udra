@@ -1,0 +1,20 @@
+package testUdra;
+
+import udra.Udra;
+
+public class mainTestReliefMapLarge {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Udra jdd = new Udra ( );
+
+		
+		jdd.display();
+		
+
+		
+		jdd.draw_relief_map("#00ff00" , "#ff0000");
+	}
+
+}

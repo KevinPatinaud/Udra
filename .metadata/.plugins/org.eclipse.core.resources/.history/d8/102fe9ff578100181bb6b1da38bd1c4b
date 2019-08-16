@@ -1,0 +1,94 @@
+package graphique;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+
+import javax.swing.JPanel;
+
+import udra.Udra;
+
+public class Udra_Relief_Panel extends JPanel {
+	
+private Udra udraToDraw;
+private String colorMinValue;
+private String colorMaxValue;
+
+protected Point mousePos = null;
+	
+	public Udra_Relief_Panel (Udra udraToDrawIn , String colorMinValueIn , String colorMaxValueIn)
+	{
+		super();
+		udraToDraw = udraToDrawIn;
+		colorMinValue = colorMinValueIn;
+		colorMaxValue = colorMaxValueIn;
+		
+				
+		addMouseMotionListener(new MouseMotionListener() {
+					
+					
+				public void mouseMoved(MouseEvent e) {
+					//Rï¿½cupï¿½re la position du cureseur ï¿½ chaque mouvement et redessine la page
+					mousePos = new Point(e.getX() , e.getY());
+					erase();
+				}
+
+				public void mouseDragged(MouseEvent arg0) {
+				}
+					
+		});
+		
+	}
+
+
+	  //Efface le contenu
+	  public void erase(){
+	    repaint();
+	  }
+
+	
+	
+	//cette méthode dessinne le contenue de la fenètre
+	  public void paintComponent(Graphics g) {
+
+		//dessine le fond de la fenetre
+	    g.setColor(Color.WHITE);
+	    g.fillRect(0, 0, this.getWidth(), this.getHeight());
+	     
+
+	    double largeurFenetre = this.getWidth();
+	    double hauteurFenetre = this.getHeight();
+	    
+
+	    //calcul the color mapping
+	    Udra mapToDraw = Drawing_Relief_Map.calculColorMapping(udraToDraw, colorMinValue, colorMaxValue);
+	    
+	    
+	    //draw the map
+	    double sqrHigh = hauteurFenetre / mapToDraw.sizeRow();
+	    double sqrWidth = largeurFenetre / mapToDraw.sizeColumn();
+	    
+	    
+	    for (int x = 0; x < mapToDraw.sizeColumn() ; x++)
+	    {
+	    	for (int y = 0; y < mapToDraw.sizeRow() ; y++)
+		    {
+	    		 //draw a squarre
+	    		if (mousePos!= null && mousePos.getX() > (int) sqrWidth  * x &&  mousePos.getX() < (int) sqrWidth  * (x + 1) && mousePos.getY() > (int) sqrHigh  * y && mousePos.getY() < (int) sqrHigh )
+	    			g.setColor( Color.black);
+	    			
+	    		else
+	    			g.setColor( (Color) mapToDraw.get(x, y));
+	    		
+	    	    g.fillRect( (int) sqrWidth  * x, (int) sqrHigh  * y ,(int) sqrWidth ,  (int) sqrHigh );
+		    }
+	    }
+	    
+	   
+	    
+	  }
+
+}

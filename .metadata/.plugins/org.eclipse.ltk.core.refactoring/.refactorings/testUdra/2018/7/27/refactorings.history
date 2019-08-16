@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;mainTestReliefMap.java&apos; to &apos;testUdra/src/testUdra&apos;&#x0D;&#x0A;- Original project: &apos;testUdra&apos;&#x0D;&#x0A;- Destination element: &apos;testUdra/src/testUdra&apos;&#x0D;&#x0A;- Original element: &apos;testUdra.mainTestReliefMap.java&apos;" description="Copy compilation unit" destination="/src&lt;testUdra" element1="/src&lt;testUdra{mainTestReliefMap.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1530905293237" units="1" version="1.0"/>
+</session>
