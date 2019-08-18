@@ -95,11 +95,9 @@ public class Udra_Lib_CSV {
 
 	    
 	      }
-		    catch(FileNotFoundException exc)
+		    catch(Exception exc)
 		      {
 		    	return false;
-		      } catch (IOException e) {
-				return false;
 			}
 		    
 	    String[] na = FileName.split("\\\\");
