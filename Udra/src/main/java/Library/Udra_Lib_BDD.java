@@ -217,7 +217,7 @@ public class Udra_Lib_BDD {
 		return saveUdraInDataBase(  udra_in , HostName , Base , User , PassWord , table , true);
 	}
 	
-	
+
 	/**
 	 * 
 	 * Permet d'enregistrer un tableau Udra en base
@@ -233,6 +233,26 @@ public class Udra_Lib_BDD {
 	 */
 	public static boolean saveUdraInDataBase(  Udra udra_in ,String HostName , String Base , String User , String PassWord , String table , boolean dropOldTable)
 	{
+		return  saveUdraInDataBase(  udra_in ,HostName , Base , User , PassWord , table , dropOldTable, "id");
+	}
+	
+	
+	/**
+	 * 
+	 * Permet d'enregistrer un tableau Udra en base
+	 * 
+	 * @param udra_in
+	 * @param HostName
+	 * @param Base
+	 * @param User
+	 * @param PassWord
+	 * @param table
+	 * @param dropOldTable
+	 * @param idColonne : specifie la colonne utilisée comme identifiant
+	 * @return
+	 */
+	public static boolean saveUdraInDataBase(  Udra udra_in ,String HostName , String Base , String User , String PassWord , String table , boolean dropOldTable, String idColonne)
+	{
 		
 		
 		//if the table already exist in database, first we drop the old table
@@ -242,18 +262,18 @@ public class Udra_Lib_BDD {
 		}
 		
 		//On envois une requete qui cré la table si elle n'existait pas et ne fait rien si elle existe
-		String createRequest = "CREATE TABLE IF NOT EXISTS " + table + " (  `id` int(11) NOT NULL AUTO_INCREMENT,   ";
+		String createRequest = "CREATE TABLE IF NOT EXISTS " + table + " (  `" + idColonne + "` int(11) NOT NULL AUTO_INCREMENT,   ";
 		for (int i = 0 ; i < udra_in.sizeColumn() ; i++)
 		{
 			//si la colonne id est présente dans l'udra on ne la recré pas 
-			if ( ! udra_in.getTitle().get(i).equalsIgnoreCase("id"))
+			if ( ! udra_in.getTitle().get(i).equalsIgnoreCase(idColonne))
 			{
 					createRequest = createRequest + formatDB(udra_in.getTitle().get(i)) + " varchar(1024) ";
 				if(i < udra_in.sizeColumn() - 1)
 					createRequest = createRequest + " , ";
 			}
 		}
-		createRequest = createRequest + " , PRIMARY KEY (`id`),  UNIQUE KEY `id` (`id`) );" ;
+		createRequest = createRequest + " , PRIMARY KEY (`" + idColonne + "`),  UNIQUE KEY `id` (`" + idColonne + "`) );" ;
 		simpleQueryToSQLDatabase (createRequest,  HostName ,  Base ,  User ,  PassWord );
 		
 		

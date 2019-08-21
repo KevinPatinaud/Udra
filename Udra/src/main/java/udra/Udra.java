@@ -451,7 +451,15 @@ public Udra copyLine(int line)
 	
 	public boolean getBoolean(int ColumnName , int RowNumber)
 	{
-		return  ( getString(ColumnName , RowNumber).toUpperCase().equalsIgnoreCase("TRUE")) ?true : false;
+		Boolean result = null;
+		String val = getString(ColumnName , RowNumber).toUpperCase();
+		
+		if (val.equalsIgnoreCase("TRUE"))
+			result = true;
+		if  (val.equalsIgnoreCase("FALSE"))
+			result = false;
+		
+		return  result;
 	}
 
 	
@@ -2592,6 +2600,20 @@ public String convertToHTMLTable ()
 	public boolean saveUdraInDataBase(String HostName , String Base , String User , String PassWord , String table , boolean dropOldTable)
 	{
 		return Udra_Lib_BDD.saveUdraInDataBase(this, HostName, Base, User, PassWord , table , dropOldTable);
+	}
+	
+
+	/**
+	 * @param HostName
+	 * @param Base
+	 * @param User
+	 * @param PassWord
+	 * @param table
+	 * @return
+	 */
+	public boolean saveUdraInDataBase(String HostName , String Base , String User , String PassWord , String table , boolean dropOldTable, String idColonne )
+	{
+		return Udra_Lib_BDD.saveUdraInDataBase(this, HostName, Base, User, PassWord , table , dropOldTable, idColonne);
 	}
 	
 	
