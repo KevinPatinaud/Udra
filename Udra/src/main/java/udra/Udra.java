@@ -435,6 +435,8 @@ public Udra copyLine(int line)
 	
 	public String getString(int ColumnName , int RowNumber)
 	{
+		if (get(ColumnName , RowNumber) == null)
+			return null;
 		return get(ColumnName , RowNumber).toString();
 	}
 
@@ -442,16 +444,30 @@ public Udra copyLine(int line)
 	
 	
 	
-	public boolean getBoolean(String ColumnName , int RowNumber)
+	public Boolean getBoolean(String ColumnName , int RowNumber)
 	{
 		return getBoolean(get_the_index_of_title_from_his_Name(ColumnName) , RowNumber);
 	}
 	
 	
 	
-	public boolean getBoolean(int ColumnName , int RowNumber)
+	public Boolean getBoolean(int ColumnName , int RowNumber)
 	{
 		Boolean result = null;
+		
+		if ( get(ColumnName , RowNumber) == null)
+			return null;
+		
+		//essais de retourner directement un bollean
+		try
+		{
+			return (Boolean) get(ColumnName , RowNumber);
+		}catch(Exception e) {}
+		
+		//sinon essais de récuperer a partir d'un string
+		if (getString(ColumnName , RowNumber) == null)
+			return null;
+		
 		String val = getString(ColumnName , RowNumber).toUpperCase();
 		
 		if (val.equalsIgnoreCase("TRUE"))
