@@ -25,23 +25,32 @@ public class Udra_Lib_Internet {
 	
 	   public static String getData_from_Web_URL(String URL)
 	   {
-		   try{
-		   //on récupère le contenu HTML de la page web
-			String ContenuPageHTML = "";
-		    String s;
-		    
-		    //donne un user agent ce qui permet de faire sauter la sécurité de certains sites
-		    System.setProperty("http.agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36"); 
-		    BufferedReader r = new BufferedReader(new InputStreamReader(new URL(URL).openStream()));
-		  
-			while ((s = r.readLine()) != null) {
-				ContenuPageHTML = ContenuPageHTML + s;
-			}
-			
-			return ContenuPageHTML;
-			
-		   }catch(Exception e){
-			   e.printStackTrace();
+		   boolean ok = false;
+		   
+		   //essais maximum 5 fois de récuperer les données du site
+		   for (int i = 0 ; i < 5 && ! ok ; i++)
+		   {
+			   try{
+			   //on récupère le contenu HTML de la page web
+				String ContenuPageHTML = "";
+			    String s;
+			    
+			    //donne un user agent ce qui permet de faire sauter la sécurité de certains sites
+			    System.setProperty("http.agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36"); 
+			    BufferedReader r = new BufferedReader(new InputStreamReader(new URL(URL).openStream()));
+			  
+				while ((s = r.readLine()) != null) {
+					ContenuPageHTML = ContenuPageHTML + s;
+				}
+				
+				//quitte la fonction si les données sont valides
+				ok = true;
+				return ContenuPageHTML;
+				
+			   }catch(Exception e){
+				   e.printStackTrace();
+				   try {	Thread.sleep(1000);		} catch (InterruptedException e1) {	e1.printStackTrace();	} //chaque echec est espacé d'une seconde
+			   }
 		   }
 		   
 		   return null;

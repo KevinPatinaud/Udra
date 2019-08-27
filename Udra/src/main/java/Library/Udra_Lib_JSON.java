@@ -46,14 +46,20 @@ public class Udra_Lib_JSON {
 
 	public static void createFromJSON_URL ( Udra udra_in , String URL )
 	{
-		try {
-			
-			String content = udra_in.getData_from_Web_URL( URL );
-			createFromJSON_String( udra_in , content);
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		//test maximum 5 fois de récuperer des données valides de la part du serveur dans le cas on le serveur présente des difficultées de connexion
+		boolean ok = false;
+		int iCompteur = 0;
+		while( ! ok && iCompteur < 5)
+		{
+			try {
+				String content = udra_in.getData_from_Web_URL( URL );
+				createFromJSON_String( udra_in , content);
+				ok = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				try {		Thread.sleep(1000);		} catch (InterruptedException e1) {	e1.printStackTrace();	} //espace chaque echec d'une seconde
+			}
+			iCompteur ++;
 		}
 	}
 	
