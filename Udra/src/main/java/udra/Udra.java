@@ -2141,10 +2141,6 @@ public Udra copyLine(int line)
 
 
 
-
-
-
-
               /**
 
                * @return
@@ -2152,20 +2148,14 @@ public Udra copyLine(int line)
                */
 
               public Drawing_Square_Udra draw_like_square( )
-
               {
 
-                
-
                  if ( sizeColumn() < 3)
-
                        return draw_like_square( Udra_Square_Panel.ColData , Udra_Square_Panel.ColValue  );
 
                  else
-
                        return draw_like_square( Udra_Square_Panel.ColData , Udra_Square_Panel.ColValue , Udra_Square_Panel.ColColor );
 
-                
 
               }
 
@@ -2175,24 +2165,15 @@ public Udra copyLine(int line)
 
              
 
-              
-
               /**
-
                * @param col_data
-
                * @param col_val
-
                * @return
-
                */
 
               public Drawing_Square_Udra draw_like_square( String col_data , String col_val )
-
               {
-
                  return draw_like_square( get_the_index_of_title_from_his_Name(col_data)  , get_the_index_of_title_from_his_Name(col_val) );
-
               }
 
              
@@ -2200,21 +2181,14 @@ public Udra copyLine(int line)
 
 
               /**
-
                * @param col_data
-
                * @param col_val
-
                * @return
-
                */
 
               public Drawing_Square_Udra draw_like_square( int col_data , int col_val )
-
               { 
-
                  return draw_like_square( col_data , col_val , null );
-
               }
 
              
@@ -2222,38 +2196,25 @@ public Udra copyLine(int line)
               
 
               /**
-
                * @param col_data
-
                * @param col_val
-
                * @param col_color
-
                * @return
-
                */
 
               public Drawing_Square_Udra draw_like_square( String col_data , String col_val , String col_color)
-
               {
-
                  return draw_like_square( get_the_index_of_title_from_his_Name(col_data)  , get_the_index_of_title_from_his_Name(col_val)  , get_the_index_of_title_from_his_Name(col_color) );
-
               }
 
              
               
 
               /**
-
                * @param col_data
-
                * @param col_val
-
                * @param col_color
-
                * @return
-
                */
 
               public Drawing_Square_Udra draw_like_square( int col_data , int col_val , Integer col_color)
@@ -2330,9 +2291,7 @@ public Udra copyLine(int line)
               
 
               /**
-
                *
-
                */
 
               private boolean draw_in_multi_color = false;
@@ -2342,9 +2301,7 @@ public Udra copyLine(int line)
               //fill the column with random color
 
               /**
-
                * @param active_color
-
                */
 
               public void set_draw_in_multi_Color( boolean active_color )
