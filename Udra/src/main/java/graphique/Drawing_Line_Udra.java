@@ -40,49 +40,32 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	// des colonne sans passer par leur nom
 
 	public static final int ColValue = 0;
-
 	public static final int ColData = 1;
-
 	public static final int ColColor = 2;
-
 	public static final int colValueDisplay = 3;
-
 	public static final String colValueDisplayStr = "VALUE_DISPLAY_DRAWING_LINE";
 
 	// At the creation we can choose to display or not the frame
 
 	public Drawing_Line_Udra()
-
 	{
-
 		super();
-
 	}
 
 	public Drawing_Line_Udra(boolean display)
-
 	{
-
 		super(display);
-
 	}
 
 	protected void Initialize()
-
 	{
-
 		setSize(800, 500);
-
 		setLocationRelativeTo(null);
-
 		setVisible(visible);
 
 		// The panel is the graphical zone of the frame
-
 		Panel = new Udra_Line_Panel();
-
 		setContentPane(Panel);
-
 	}
 
 	public Drawing_Line_Udra add(Udra in)
@@ -156,7 +139,6 @@ public class Drawing_Line_Udra extends DrawingUdra {
 		{
 
 			if (!nvUdra.isNumber(colValue, i))
-
 			{
 
 				nvUdra.setAvalue(colData, i, "Don't display");
