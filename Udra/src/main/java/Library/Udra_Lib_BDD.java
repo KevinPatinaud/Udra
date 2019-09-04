@@ -378,7 +378,7 @@ public class Udra_Lib_BDD {
 	
 	public static boolean queryFromUdraToSQLDatabase ( Udra udra_in , String Request, String HostName , String Base , String User , String PassWord )  //send a request to a database
 	{
-		/* connection � la base de donn�es */
+		/* connection a la base de donnees */
 		String url = "jdbc:mysql://" + HostName + "/" + Base;
 		 boolean result = false;
 	
@@ -391,7 +391,7 @@ public class Udra_Lib_BDD {
 			connection = DriverManager.getConnection( url, User, PassWord );
 		    
 		    
-		    /* Cr�ation de l'objet g�rant les requ�tes */
+		    /* Creation de l'objet gerant les requetes */
 		    Statement statement = connection.createStatement();
 
 		   
@@ -410,12 +410,14 @@ public class Udra_Lib_BDD {
 				
 			}
 		    
-		} catch ( Exception e ) { System.out.print(e);return false;}
+		} catch ( Exception e ) { 
+			e.printStackTrace();
+			return false;
+		}
 		
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
