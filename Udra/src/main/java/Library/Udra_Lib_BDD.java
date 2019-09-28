@@ -123,7 +123,7 @@ public class Udra_Lib_BDD {
 		    		    
 		    String requeteOderBy = "";
 		    if ( sensOrder != null)
-		    	requeteOderBy = " ORDER BY " + orderBy + " ASC";
+		    	requeteOderBy = " ORDER BY " + orderBy + " " + sensOrder;
 		    
 		    ResultSet ResultContentTable = statement.executeQuery( "SELECT * FROM  `" + Table + "`"  + requeteOderBy);
 
