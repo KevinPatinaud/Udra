@@ -8,11 +8,11 @@
 	<classpathentry kind="src" path="Udra/src/main/java"/>
 	<classpathentry kind="src" path="Udra/src/test/java"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/gson-2.3.1.jar"/>
-	<classpathentry kind="lib" path="Udra/src/main/resources/mysql-connector-java-5.1.34-bin.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/poi-3.12-20150511.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/poi-ooxml-3.12-20150511.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/poi-ooxml-schemas-3.12-20150511.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/xmlbeans.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/javax.mail-1.6.2.jar"/>
+	<classpathentry kind="lib" path="D:/Documents/OneDrive/Workspaces/Udra/Udra/src/main/resources/mysql-connector-java-5.1.48.jar"/>
 	<classpathentry kind="output" path="Udra/target/classes"/>
 </classpath>
