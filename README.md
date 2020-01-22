@@ -8,7 +8,8 @@ Udra pour Unique Data Representation and Analyse est une api Java qui comme son 
 <h1>Liste des principales fonctions proposées par Udra</h1>
       
 Constructor
-chart () :create an empty chart
+
+<b>chart () :</b>create an empty chart
 
 chart myChart = new chart ();
 myChart.display();
