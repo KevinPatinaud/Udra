@@ -7,14 +7,14 @@ Udra pour Unique Data Representation and Analyse est une api Java qui comme son 
 
 <h1>Liste des principales fonctions proposées par Udra</h1>
       
-Constructor
+<b>Constructor</b>
 
 <b>chart () :</b>create an empty chart
 
 chart myChart = new chart ();
 myChart.display();
 
-chart (String ... title) :create an empty chart with specificate title column
+<b>chart (String ... title) :</b>create an empty chart with specificate title column
 
 chart myChart = new chart ("title 1" , "title 2");
 myChart.display();
@@ -27,7 +27,7 @@ chart myChart = new chart ( 5 );
 myChart.display();
 
 
-chart (int number_Of_Column , int number_Of_Line ) :create an empty chart with specificate number of column and number of line
+<b>chart (int number_Of_Column , int number_Of_Line ) :</b>create an empty chart with specificate number of column and number of line
 
 chart myChart = new chart ( 5 , 10 );
 myChart.display();
