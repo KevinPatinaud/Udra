@@ -2,36 +2,38 @@ package Library;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+//import oracle.jdbc.connector.*;
 
 import udra.Udra;
 
 public class Udra_Lib_BDD {
 
-	//identique ï¿½ ReplaceRequest cette mï¿½thode formate en plus les donnï¿½es spï¿½cialement pour les requï¿½tes SQL
-	//On lui passe en paramï¿½tre le numï¿½ro de la ligne
-	//et la mï¿½thode retourne cette ligne formatï¿½e
+	//identique a ReplaceRequest cette methode formate en plus les donnees specialement pour les requetes SQL
+	//On lui passe en parametre le numero de la ligne
+	//et la methode retourne cette ligne formatee
 	public static String replaceRequestForSQL( Udra udra_in , String Request, int row) throws Exception
 	{
 
-		//dï¿½coupe la requï¿½te initial suivant [ ] reprï¿½sentant le nom des colonnes
+		//decoupe la requete initial suivant [ ] representant le nom des colonnes
 		String [] TabReq = Request.split("\\[|\\]");
 		
-		//initialise la String de rï¿½sultat
+		//initialise la String de resultat
 		String RequestReformed = ""; 
 		
-		//pour chaque bloque de la requï¿½te initial
+		//pour chaque bloque de la requete initial
 		for (int i = 0 ; i < TabReq.length ; i++ )
 		{
 			
-			//si le numï¿½ro de bloc est pair, il s'agit d'un bloc inactif
+			//si le numero de bloc est pair, il s'agit d'un bloc inactif
 			if (i%2 == 0)
 				RequestReformed = RequestReformed + TabReq[i];
 			else //sinon c'est un titre de colonne
 			{
-				if (udra_in.get( TabReq[i] , row) != null) //si la data n'est pas null, on la formate et on l'ajoute au rï¿½sultat
+				if (udra_in.get( TabReq[i] , row) != null) //si la data n'est pas null, on la formate et on l'ajoute au resultat
 					RequestReformed = RequestReformed + udra_in.get( TabReq[i] , row).toString().replace("'", "\'") ;
 			}
 		}
@@ -49,7 +51,7 @@ public class Udra_Lib_BDD {
 	
 	public static Udra createFromSQLDatabase( String HostName , String Base , String User , String PassWord)
 	{
-		/* connection ï¿½ la base de donnï¿½es */
+		/* connection a la base de donnees */
 		String url = "jdbc:mysql://" + HostName + "/" + Base;
 	
 		Udra result = new Udra("Tables");
@@ -58,12 +60,12 @@ public class Udra_Lib_BDD {
 			java.sql.Connection connection = DriverManager.getConnection( url, User, PassWord );
 
 		    
-		    /* Crï¿½ation de l'objet gï¿½rant les requï¿½tes */
+		    /* Creation de l'objet gerant les requetes */
 		    Statement statement = connection.createStatement();
 
 		    ResultSet resultQuery = statement.executeQuery( "SHOW tables;" );
 
-		    //recupï¿½re le nom des tables
+		    //recupere le nom des tables
 		    while ( resultQuery.next() ) {
 		        String Table = resultQuery.getString(1);
 		        Udra newUdra = new Udra();
@@ -71,13 +73,10 @@ public class Udra_Lib_BDD {
 		        newUdra.setName(Table);
 		        newUdra.createFromSQLTable(HostName, Base, User, PassWord, Table);
 		        
-		        
-		        result.insertALine(newUdra);
-		        
+		        result.insertALine(newUdra);    
 		    }
 		    
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		    		    
@@ -89,44 +88,61 @@ public class Udra_Lib_BDD {
 	
 
 	
-	
+	//par défaut les resultats ne sont pas trié
 	public static Udra createFromSQLTable( Udra udra_in ,String HostName , String Base , String User , String PassWord , String Table)
 	{
-		return createFromSQLTable( udra_in , HostName ,  Base ,  User ,  PassWord ,  Table,  null, null);
+		return createFromSQLTable( udra_in , null, HostName ,  Base ,  User ,  PassWord ,  Table,  null, null);
 	}
 
-
+	//si l'on demande de trier les resultat, ceux-ci le sont par l'ordre ASC
 	public static Udra createFromSQLTable( Udra udra_in ,String HostName , String Base , String User , String PassWord , String Table, String orderBy)
 	{
-		return createFromSQLTable( udra_in , HostName ,  Base ,  User ,  PassWord ,  Table,  orderBy, "ASC");
+		return createFromSQLTable( udra_in , null, HostName ,  Base ,  User ,  PassWord ,  Table,  orderBy, "ASC");
 	}
 	
-	public static Udra createFromSQLTable( Udra udra_in ,String HostName , String Base , String User , String PassWord , String Table, String orderBy , String sensOrder)
+	
+	/**
+	 * 
+	 * @param udra_in
+	 * @param confConnector : (optionnel) Si une configuration précise est passée on l'utilise sinon on utilise la configuration par défaut de MySQL <br/>Exemple Oracle : jdbc:oracle:thin:@URLServeur:Port:SID <br/>
+	 * @param HostName : (optionnel si Oracle)
+	 * @param Base : (optionnel si Oracle)
+	 * @param User
+	 * @param PassWord
+	 * @param Table
+	 * @param orderBy
+	 * @param sensOrder ordre de tri
+	 * @return
+	 */
+
+	
+	public static Udra createFromSQLTable( Udra udra_in , String confConnector , String HostName , String Base , String User , String PassWord , String Table, String orderBy , String sensOrder)
 	{
-		/* connection ï¿½ la base de donnï¿½es */
-		String url = "jdbc:mysql://" + HostName + "/" + Base;
+		/* configuration du connecteur,  */
+		String configConnector = (confConnector == null) ? "jdbc:mysql://" + HostName + "/" + Base : confConnector;
 	
 		try {
-			
-			java.sql.Connection connection = DriverManager.getConnection( url, User, PassWord );
-		    
-		    
-		    /* Crï¿½ation de l'objet gï¿½rant les requï¿½tes */
-		    Statement statement = connection.createStatement();
+			java.sql.Connection connection = DriverManager.getConnection( configConnector, User, PassWord );
 
-		    ResultSet result = statement.executeQuery( "SHOW COLUMNS FROM  `" + Table + "`" );
-
-		    while ( result.next() ) {
-		        String Colonne = result.getString( "Field" );
-		        udra_in.getTitle().add(Colonne);
-		    }
 		    		    
 		    String requeteOderBy = "";
 		    if ( sensOrder != null)
 		    	requeteOderBy = " ORDER BY " + orderBy + " " + sensOrder;
 		    
-		    ResultSet ResultContentTable = statement.executeQuery( "SELECT * FROM  `" + Table + "`"  + requeteOderBy);
+		    /* Execution de la requete */
+		    Statement statement = connection.createStatement();
+		    ResultSet ResultContentTable = statement.executeQuery( "SELECT * FROM  " + Table + requeteOderBy);
 
+		    ResultSetMetaData rsmd = ResultContentTable.getMetaData();
+		    int columnCount = rsmd.getColumnCount();
+
+		    // Génère les colonnes
+		    for (int i = 1; i <= columnCount; i++ ) {
+		      udra_in.insertAColumn(rsmd.getColumnName(i));
+		    }
+		    
+		    
+		    //alimente les lignes
 		    while ( ResultContentTable.next() ) {
 		    	
 		    	ArrayList<String> Line = new ArrayList<String>(); 
@@ -139,14 +155,64 @@ public class Udra_Lib_BDD {
 		    	try {
 					udra_in.insertAnArrayList(Line);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    
+		    
+		    connection.close();
+		    
+		} catch ( SQLException e ) { 
+			e.printStackTrace();
+		}
+		return udra_in;
+	}
+	
+	
+
+	
+	public static Udra listeTablesOracle( Udra udra_in , String confConnector , String HostName , String Base , String User , String PassWord )
+	{
+		/* configuration du connecteur,  */
+		String configConnector = (confConnector == null) ? "jdbc:mysql://" + HostName + "/" + Base : confConnector;
+	
+		try {
+			java.sql.Connection connection = DriverManager.getConnection( configConnector, User, PassWord );
+
+		    
+		    /* Execution de la requete */
+		    Statement statement = connection.createStatement();
+		    ResultSet ResultContentTable = statement.executeQuery( "SELECT  * FROM  user_tables");
+
+		    ResultSetMetaData rsmd = ResultContentTable.getMetaData();
+		    int columnCount = rsmd.getColumnCount();
+
+		    // Génère les colonnes
+		    for (int i = 1; i <= columnCount; i++ ) {
+		      udra_in.insertAColumn(rsmd.getColumnName(i));
+		    }
+		    
+		    
+		    //alimente les lignes
+		    while ( ResultContentTable.next() ) {
+		    	
+		    	ArrayList<String> Line = new ArrayList<String>(); 
+		    	
+		    	for (int i = 0 ; i < udra_in.getTitle().size() ; i++)
+			    {
+			        String Case = ResultContentTable.getString( udra_in.getTitle().get(i) );
+			        Line.add(Case);
+			    }
+		    	try {
+					udra_in.insertAnArrayList(Line);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 		    }
 		    
 		    
 		} catch ( SQLException e ) { 
-			System.out.print(e);
+			e.printStackTrace();
 		}
 		return udra_in;
 	}
@@ -168,8 +234,8 @@ public class Udra_Lib_BDD {
 	
 	public static void clearDatabase( String HostName , String Base , String User , String PassWord)
 	{
-		//rï¿½cupï¿½re le nom des tables
-		/* connection ï¿½ la base de donnï¿½es */
+		//recupere le nom des tables
+		/* connection a la base de donnees */
 		String url = "jdbc:mysql://" + HostName + "/" + Base;
 	
 		ArrayList<Udra> result = new ArrayList<Udra>();
@@ -178,20 +244,19 @@ public class Udra_Lib_BDD {
 			java.sql.Connection connection = DriverManager.getConnection( url, User, PassWord );
 
 		    
-		    /* Crï¿½ation de l'objet gï¿½rant les requï¿½tes */
+		    /* Creation de l'objet gerant les requetes */
 		    Statement statement = connection.createStatement();
 
 		    ResultSet resultQuery = statement.executeQuery( "SHOW tables;" );
 
-		    //recupï¿½re le nom des tables
+		    //recupere le nom des tables
 		    while ( resultQuery.next() ) {
 		        String Table = resultQuery.getString(1);
-		        //supprimme toutes les tables une ï¿½ une
+		        //supprimme toutes les tables une a une
 		        simpleQueryToSQLDatabase ("DROP TABLE IF EXISTS " + Table +";",  HostName ,  Base ,  User ,  PassWord );
 				
 		    }
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
@@ -287,7 +352,7 @@ public class Udra_Lib_BDD {
 			ReqNameofColumn = ReqNameofColumn + " , ";
 		}
 		
-		//on recupere le nom des colonnes pour former une requï¿½te qui sera interprï¿½tï¿½e par QueryFromUdraToSQLDatabase
+		//on recupere le nom des colonnes pour former une requete qui sera interpretee par QueryFromUdraToSQLDatabase
 		String ReqDataofColumn = "";
 		
 		for (int i = 0 ; i < udra_in.sizeColumn() ; i++)
@@ -317,7 +382,7 @@ public class Udra_Lib_BDD {
 	
 	public static boolean simpleQueryToSQLDatabase ( String Request, String HostName , String Base , String User , String PassWord )  //send a request to a database
 	{
-		/* connection ï¿½ la base de donnï¿½es */
+		/* connection a la base de donnees */
 		String url = "jdbc:mysql://" + HostName + "/" + Base;
 	
 		try {
@@ -326,7 +391,7 @@ public class Udra_Lib_BDD {
 			java.sql.Connection connection = DriverManager.getConnection( url, User, PassWord );
 		    
 		    
-		    /* Crï¿½ation de l'objet gï¿½rant les requï¿½tes */
+		    /* Creation de l'objet gerant les requetes */
 		    Statement statement = connection.createStatement();
 
 		    statement.execute(Request );

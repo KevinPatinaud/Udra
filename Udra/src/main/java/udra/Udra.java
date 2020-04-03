@@ -13,6 +13,8 @@ import Library.Udra_Lib_Excel;
 import Library.Udra_Lib_Internet;
 import Library.Udra_Lib_JSON;
 import Library.Udra_Lib_Mail;
+import Library.Udra_Lib_SOAP;
+import Library.Udra_Lib_XML;
 import graphique.Udra_Pie_Panel;
 import graphique.Udra_Square_Panel;
 import graphique.Drawing_Line_Udra;
@@ -22,11 +24,11 @@ import graphique.Drawing_Square_Udra;
 
 
 /**
- * @author K�vin Patinaud
+ * @author Kï¿½vin Patinaud
  *
  * Signification :
- * UDRA pour Unique Data Representation & Analyse fait r�f�rence au type de gestion commune des donn�es.
- * Udra signifie �galement �loutre� en lituanien
+ * UDRA pour Unique Data Representation & Analyse fait rï¿½fï¿½rence au type de gestion commune des donnï¿½es.
+ * Udra signifie ï¿½galement ï¿½loutreï¿½ en lituanien
  *
  */
 public class Udra {
@@ -269,14 +271,14 @@ public Udra copyLine(int line)
 }
 
 	
-	// permet d'envoyer des requ�tes sur les titre des colonnes.
+	// permet d'envoyer des requï¿½tes sur les titre des colonnes.
 	// exemple :
 	// INSERT INTO (...) Values('[Titre1]' , '[Titre2]')
 	// donnera
 	// INSERT INTO (...) Values('a' , 'a')
 	// INSERT INTO (...) Values('b' , 'b')
-	// Cette m�thode ne nettoye pas les donn�es
-	// Une seconde plus adapt�es aux requ�te SQL (avec formatage des donn�es) se trouve dans la section SQL
+	// Cette mï¿½thode ne nettoye pas les donnï¿½es
+	// Une seconde plus adaptï¿½es aux requï¿½te SQL (avec formatage des donnï¿½es) se trouve dans la section SQL
 	/**
 	 * Send request to format data on column for each line
 	 * They symbols [ and ] indicate the name of the column to use
@@ -467,7 +469,7 @@ public Udra copyLine(int line)
 			return (Boolean) get(ColumnName , RowNumber);
 		}catch(Exception e) {}
 		
-		//sinon essais de r�cuperer a partir d'un string
+		//sinon essais de récuperer a partir d'un string
 		if (getString(ColumnName , RowNumber) == null)
 			return null;
 		
@@ -730,7 +732,7 @@ public Udra copyLine(int line)
 	
 	public void dropLinesPrct( double prct)
 	{
-		//jusqu'� 50% de suppression on compte le nombre de ligne � garder
+		//jusqu'à 50% de suppression on compte le nombre de ligne à garder
 		if ( prct < 0.5)
 		{
 			int nmbLineGarde = (int) ( 1 / prct);
@@ -742,7 +744,7 @@ public Udra copyLine(int line)
 			}
 		}
 		
-		//au dela de 50% de suppression on compte les lignes � supprimer
+		//au dela de 50% de suppression on compte les lignes à supprimer
 		else if ( prct <= 1)
 		{
 			int nbrLineSuppr = (int) (1 / ( 1 - prct));
@@ -777,7 +779,7 @@ public Udra copyLine(int line)
 	public void delete_duplicate_row(boolean RespectCasse , String ... Titre )
 	{
 		//On determine le parcour en largeur des colonnes
-		Integer[] weidth = null; //si aucun titre n'est passer en param�tre on prend le udra dans toutes sa largeur
+		Integer[] weidth = null; //si aucun titre n'est passer en paramï¿½tre on prend le udra dans toutes sa largeur
 		if (Titre.length == 0)
 		{
 			weidth = new Integer[sizeColumn()];
@@ -785,7 +787,7 @@ public Udra copyLine(int line)
 			for (int i = 0 ; i < sizeColumn() ; i++)
 				weidth[i] = i;
 		}
-		else //si les titres sont d�finis on indique le num�ro des colonnes � prendre
+		else //si les titres sont dï¿½finis on indique le numï¿½ro des colonnes ï¿½ prendre
 		{
 			weidth = new Integer[Titre.length];
 			
@@ -1273,7 +1275,7 @@ public Udra copyLine(int line)
 
 	
 	/**
-	 * @param colonne , lignes o� faire la moyenne, en comptant � partir du bas du tableau par d�faut
+	 * @param colonne , lignes oï¿½ faire la moyenne, en comptant ï¿½ partir du bas du tableau par dï¿½faut
 	 * @return
 	 */
 	
@@ -1292,7 +1294,7 @@ public Udra copyLine(int line)
 	}
 	
 	/**
-	 * @param colonne , lignes o� faire la moyenne, en comptant � partir du bas du tableau ?
+	 * @param colonne , lignes oï¿½ faire la moyenne, en comptant ï¿½ partir du bas du tableau ?
 	 * @return
 	 */
 	
@@ -1328,7 +1330,7 @@ public Udra copyLine(int line)
 	
 
 	/**
-	 * @param colonne , lignes o� faire la moyenne, en comptant � partir du bas du tableau ?
+	 * @param colonne , lignes oï¿½ faire la moyenne, en comptant ï¿½ partir du bas du tableau ?
 	 * @return
 	 */
 	
@@ -1584,8 +1586,8 @@ public Udra copyLine(int line)
 		// return 			
 			
 		//En francais :
-		//On supprime dans le udra actuel ( this ) les lignes qui sont en double dans le udra actuel et dans le second en fonction des colonnes match�es 
-		//Le udra retourn� par la fonction correspond au udra actuel apr�s la fonction + le second udra
+		//On supprime dans le udra actuel ( this ) les lignes qui sont en double dans le udra actuel et dans le second en fonction des colonnes matchï¿½es 
+		//Le udra retournï¿½ par la fonction correspond au udra actuel aprï¿½s la fonction + le second udra
 			
 		Udra second = copyFrom(seconds);
 		
@@ -2240,7 +2242,7 @@ public Udra copyLine(int line)
                  }
 
 
-                 //udra servant � l'animation
+                 //udra servant ï¿½ l'animation
 
                  Udra tempo = Udra.copyFrom(this);
 
@@ -2393,7 +2395,7 @@ public Udra copyLine(int line)
 	 //*********************************************************************************************************************************************************************
 	 //***MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL****MAIL******
 	 //*********************************************************************************************************************************************************************   
-
+		    
 			@Deprecated
 			public void sendMail_GMail( String colEmetteur, String colPassword, String colDestinataire, String colObjet, String colMessage)
 			{
@@ -2455,7 +2457,6 @@ public String convertToHTMLTable ()
 	
 	
 	
-	
 
 	//****************************************************************************************************************************************************************************
 	//* DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *** DATABASE *****
@@ -2513,8 +2514,29 @@ public String convertToHTMLTable ()
 	
 	public Udra createFromSQLTable(String HostName , String Base , String User , String PassWord , String table, String orderBy, String sensOrder)
 	{
-		return Udra_Lib_BDD.createFromSQLTable( this , HostName ,  Base ,  User ,  PassWord ,  table, orderBy, sensOrder);
+		return Udra_Lib_BDD.createFromSQLTable( this , null, HostName ,  Base ,  User ,  PassWord ,  table, orderBy, sensOrder);
 	}
+
+	public Udra createFromSQLTableConfConnector(String confConnector , String User , String PassWord , String table)
+	{
+		return Udra_Lib_BDD.createFromSQLTable( this , confConnector, null ,  null ,  User ,  PassWord ,  table, null, null);
+	}
+	
+	public Udra createFromSQLTableConfConnector(String confConnector , String User , String PassWord , String table, String orderBy, String sensOrder)
+	{
+		return Udra_Lib_BDD.createFromSQLTable( this , confConnector, null ,  null ,  User ,  PassWord ,  table, orderBy, sensOrder);
+	}
+	
+	
+	
+	public Udra listeTablesOracle(String confConnector , String User , String PassWord )
+	{
+		return Udra_Lib_BDD.listeTablesOracle(this , confConnector, null ,  null ,  User ,  PassWord );
+	}
+	
+	
+	
+	
 	
 	
 	/**
@@ -2636,6 +2658,30 @@ public String convertToHTMLTable ()
 	}
 	
 	
+	
+
+	//***************************************************************************************************************************************************************************************************
+	//*** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML *** XML ***
+	//***************************************************************************************************************************************************************************************************
+	
+	public Udra createFromXML(String xml)
+	{
+		this.clear();
+		return Udra_Lib_XML.createFromXML(this, xml);
+	}
+	
+
+	
+	//************************************************************************************************************************************************************************************************
+	//*** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP *** SOAP ***
+	//************************************************************************************************************************************************************************************************
+	
+	public Udra createFromSOAP(String url, String soapAction, String body) {
+		this.clear();
+		return Udra_Lib_SOAP.createFromSOAP(this, url, soapAction, body);
+	}
+	
+	
 
 	
 	//******************************************************************************************************************************************************************************************************
@@ -2700,7 +2746,7 @@ public String convertToHTMLTable ()
 					
 					try
 					{
-						//Si le champ est un Udra on recupère son contenu JSon
+						//Si le champ est un Udra on recupÃ¨re son contenu JSon
 						 Udra val = Udra.copyFrom( (Udra) get( col , line) );
 						 val.setName(getTitle().get(col));
 						 String JSon =  val.toJSon();
