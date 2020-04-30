@@ -739,3 +739,11 @@ createFromXLS(String fileURL ) : create the chart from the XLS file
 createFromXLS(String fileURL , Object defaultValue) : The same but you choose the Object which be use instead of a null cell
 
 createFromXLS(String fileURL , int FirstRow , int FirstCell , int LastRow , int LastCell , Object ... defaultValue) : The same but you choose the region into the Excel to convert in chart
+
+
+
+
+
+
+
+Project page : <a href="http://www.patinaud.org/Displayer.php?Categorie=Technologies&Page=Developpement&File=Udra,%20gestion%20et%20analyse%20de%20donn%C3%A9es">Page du projet</a>
