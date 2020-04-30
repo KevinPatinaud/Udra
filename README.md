@@ -744,6 +744,15 @@ createFromXLS(String fileURL , int FirstRow , int FirstCell , int LastRow , int 
 
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<a href="http://www.patinaud.org/Displayer.php?Categorie=Technologies&Page=Developpement&File=Udra,%20gestion%20et%20analyse%20de%20donn%C3%A9es">Projet page</a>
 
 
-Project page : <a href="http://www.patinaud.org/Displayer.php?Categorie=Technologies&Page=Developpement&File=Udra,%20gestion%20et%20analyse%20de%20donn%C3%A9es">Page du projet</a>
+
+<br/>
+<a href="http://www.patinaud.org">Author website</a>
