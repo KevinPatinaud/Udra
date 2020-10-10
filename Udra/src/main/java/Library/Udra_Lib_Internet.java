@@ -25,10 +25,9 @@ public class Udra_Lib_Internet {
 	
 	   public static String getData_from_Web_URL(String URL)
 	   {
-		   boolean ok = false;
 		   
 		   //essais maximum 5 fois de récuperer les données du site
-		   for (int i = 0 ; i < 5 && ! ok ; i++)
+		   for (int i = 0 ; i < 5 ; i++)
 		   {
 			   try{
 			   //on récupère le contenu HTML de la page web
@@ -44,7 +43,6 @@ public class Udra_Lib_Internet {
 				}
 				
 				//quitte la fonction si les données sont valides
-				ok = true;
 				return ContenuPageHTML;
 				
 			   }catch(Exception e){
