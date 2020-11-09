@@ -44,23 +44,22 @@ public class Udra_Line_Panel extends UdraPanel {
 	// des colonne sans passer par leur nom
 
 	public static final int ColValue = 0;
-
 	public static final int ColData = 1;
-
 	public static final int ColColor = 2;
-
 	public static final int colValueDisplay = 3;
 
+	
+
 	public Udra_Line_Panel() {
-
 		super();
-
 	}
 
+
+
+	
+	
 	// permet de forcer un niveau de zoom depuis l'extérieur
-
 	public void forcerZoom(double nouvelleValeur)
-
 	{
 
 		decalX = 100000;
@@ -84,7 +83,6 @@ public class Udra_Line_Panel extends UdraPanel {
 	}
 
 	// cette méthode dessinne le contenue de la fenètre
-
 	public void paintComponent(Graphics g) {
 
 		refreshParametre();
@@ -100,7 +98,6 @@ public class Udra_Line_Panel extends UdraPanel {
 		g.setColor(Color.black);
 
 		for (int itUdra = 0; itUdra < UdrasList.size(); itUdra++)
-
 		{
 
 			Udra UdraActu = (Udra) UdrasList.get(itUdra);
@@ -121,20 +118,15 @@ public class Udra_Line_Panel extends UdraPanel {
 
 				g.setColor((Color) (UdraActu.get(ColColor, i)));
 
-				if (UdraActu.isNumber(ColValue, i) && UdraActu.isNumber(ColValue, i + 1))// control que les données ne
-																							// soit pas null
-
+				if (UdraActu.isNumber(ColValue, i) && UdraActu.isNumber(ColValue, i + 1))// control que les données ne soit pas null
 				{
-
 					g.drawLine((int) (i * EchelleX) - decalX,
 							get_Pos_On_Screen_From_Y_value(UdraActu.getDbl(ColValue, i)),
 							(int) ((i + 1) * EchelleX) - decalX,
 							get_Pos_On_Screen_From_Y_value(UdraActu.getDbl(ColValue, i + 1)));
 
 					if (EchelleX > 10) // affiche les intersections de droites si le zoom est suffisant
-
 					{
-
 						g.fillOval((int) (((i) * EchelleX) - decalX) - 3,
 								get_Pos_On_Screen_From_Y_value(UdraActu.getDbl(ColValue, i)) - 3, 6, 6);
 
@@ -142,13 +134,10 @@ public class Udra_Line_Panel extends UdraPanel {
 								get_Pos_On_Screen_From_Y_value(UdraActu.getDbl(ColValue, i + 1)) - 3, 6, 6);
 
 					}
-
 				}
 
 				// si il s'agit d'un multi nombre (courbe discontinue)
-
 				if (UdraActu.isMultiNumber(ColValue, i) && UdraActu.isMultiNumber(ColValue, i + 1))
-
 				{
 
 					g.drawLine((int) (i * EchelleX) - decalX,
@@ -167,23 +156,17 @@ public class Udra_Line_Panel extends UdraPanel {
 								get_Pos_On_Screen_From_Y_value(UdraActu.getDblFromMulti(ColValue, i + 1, 0)) - 3, 6, 6);
 
 					}
-
 				}
-
 			}
-
 		}
 
 		// Affiche les infos du curseur
 
 		if (MousePos != null)
-
 		{
 
 			int PointMini = -1;
-
 			int UdraMini = -1;
-
 			double distMini = 1000; // définit une distance minimale à respectée, remplace un if
 
 			String MessageEAfficher = "";
@@ -191,7 +174,6 @@ public class Udra_Line_Panel extends UdraPanel {
 			int UdraSize = UdrasList.size();
 
 			for (int itUdra = 0; itUdra < UdraSize; itUdra++)
-
 			{
 
 				Udra UdraActu = (Udra) UdrasList.get(itUdra);
@@ -205,7 +187,6 @@ public class Udra_Line_Panel extends UdraPanel {
 				XFinCrb = (XFinCrb > UdraActu.sizeRow()) ? UdraActu.sizeRow() : XFinCrb;
 
 				for (int i = XDepCrb; i < XFinCrb; i++)
-
 				{
 
 					if (UdraActu.isNumber(ColValue, i))
@@ -258,7 +239,6 @@ public class Udra_Line_Panel extends UdraPanel {
 													UdraActu.getDblFromMulti(ColValue, i, 0)));
 
 							if (distActu < distMini)
-
 							{
 
 								distMini = distActu;
@@ -274,7 +254,6 @@ public class Udra_Line_Panel extends UdraPanel {
 						}
 
 						if (UdraActu.getDblFromMulti(ColValue, i, 1) != null)
-
 						{
 
 							double distActu = ((double) MousePos.x - (i * EchelleX - decalX))
@@ -308,7 +287,6 @@ public class Udra_Line_Panel extends UdraPanel {
 			}
 
 			if (PointMini != -1) // les points mini ont été trouvés
-
 			{
 
 				// recupère les messages
@@ -325,18 +303,14 @@ public class Udra_Line_Panel extends UdraPanel {
 						: msgX.length()) * 8;
 
 				if (MousePos.x + Longueurboite > getWidth())
-
 					decalBoitedialX = -Longueurboite;
 
 				if (MousePos.y - 30 > 0)
-
 					decalBoitedialY = -25;
-
 				else
-
 					decalBoitedialX += 15;
 
-				g.setColor(new Color(255, 229, 204, 100));
+				g.setColor(new Color(255, 229, 204, transparenceBoiteMessagePrct));
 
 				g.fillRect(MousePos.x + decalBoitedialX, MousePos.y + decalBoitedialY, Longueurboite, 25);
 
@@ -492,9 +466,7 @@ public class Udra_Line_Panel extends UdraPanel {
 	}
 
 	// on ajoute un Udra au graphique
-
 	public void setUdra(Udra nvUdra)
-
 	{
 
 		UdrasList.add(nvUdra);
@@ -502,50 +474,33 @@ public class Udra_Line_Panel extends UdraPanel {
 	}
 
 	// Efface le contenu
-
 	public void erase() {
-
 		repaint();
-
 	}
 
 	// rafraichit tout les paramètres permttant le dessin, évite de rééxécuter tout
 	// les calculs
-
 	public void refreshParametre()
-
 	{
-
 		refreshValueMaxY();
-
 		refreshValueMinY();
-
 		refreshEchelleY();
-
 	}
 
 	public void setLogarithme(boolean logActif) {
-
 		if (!logActif)
-
 		{
 
 			// pour chaque Udra
-
 			for (int it_udra = 0; it_udra < UdrasList.size(); it_udra++)
-
 			{
 
 				// pour chaque ligne de chaque Udra
-
 				for (int i = 0; i < ((Udra) UdrasList.get(it_udra)).sizeRow(); i++)
-
 				{
 
 					// on recopie les value du display dans les données de construction du graphique
-
-					((Udra) UdrasList.get(it_udra)).setAvalue(ColValue, i,
-							((Udra) UdrasList.get(it_udra)).get(colValueDisplay, i));
+					((Udra) UdrasList.get(it_udra)).setAvalue(ColValue, i,((Udra) UdrasList.get(it_udra)).get(colValueDisplay, i));
 
 				}
 
@@ -554,7 +509,6 @@ public class Udra_Line_Panel extends UdraPanel {
 		}
 
 		if (logActif)
-
 		{
 
 			// recherche la valeur minimale
@@ -562,28 +516,20 @@ public class Udra_Line_Panel extends UdraPanel {
 			Double valMin = null;
 
 			// pour chaque Udra
-
 			for (int it_udra = 0; it_udra < UdrasList.size(); it_udra++)
-
 			{
 
 				// pour chaque ligne de chaque Udra
-
 				for (int i = 0; i < ((Udra) UdrasList.get(it_udra)).sizeRow(); i++)
-
 				{
 
 					// on calcul les points de graphique
-
-					if (((Udra) UdrasList.get(it_udra)).isNumber(colValueDisplay, i)
-							&& ((Udra) UdrasList.get(it_udra)).getDbl(colValueDisplay, i) > 0)
-
+					if (((Udra) UdrasList.get(it_udra)).isNumber(colValueDisplay, i) && ((Udra) UdrasList.get(it_udra)).getDbl(colValueDisplay, i) > 0)
 					{
 
 						double pt = ((Udra) UdrasList.get(it_udra)).getDbl(colValueDisplay, i);
 
 						if (valMin == null || pt < valMin)
-
 							valMin = pt;
 
 					}
@@ -592,18 +538,12 @@ public class Udra_Line_Panel extends UdraPanel {
 
 			}
 
-			// effectue les calculs
-
-			// pour chaque Udra
-
+			// effectue les calculs pour chaque Udra
 			for (int it_udra = 0; it_udra < UdrasList.size(); it_udra++)
-
 			{
 
 				// pour chaque ligne de chaque Udra
-
 				for (int i = 0; i < ((Udra) UdrasList.get(it_udra)).sizeRow(); i++)
-
 				{
 
 					// on calcul les points de graphique

@@ -41,34 +41,24 @@ import udra.Udra;
 
 public abstract class UdraPanel extends JPanel {
 
-	// Parametres g�n�rique
-
+	// Parametres generique
 	ArrayList<Udra> UdrasList = new ArrayList<Udra>();
 
 	// paramatres sp�cifiques
 
 	// gestion du zoom
-
 	protected double zoom = 1;
-
 	protected int decalX = 0;
-
 	protected int decalY = 0;
-
 	protected Point MousePress = null;
-
 	protected static final double forceDuZoom = 1.2;
-
 	protected Point MousePos = null;
-
 	protected boolean relatif = false;
-
+	protected int transparenceBoiteMessagePrct = 100;
+	
 	// Parametre static �vite de relance � chaque fois les calculs
-
 	protected double ValueMinY = 0;
-
 	protected double ValueMaxY = 0;
-
 	protected double EchelleY = 0;
 
 	// Elements graphique compl�mentaires
@@ -81,13 +71,12 @@ public abstract class UdraPanel extends JPanel {
 	// et fx signifie que x et y sont fixe
 
 	protected Udra list_text = new Udra("x", "y", "type_position", "text", "color", "font");
-
 	protected Udra list_button = new Udra("x", "y", "type_position", "text", "action");
-
 	protected int default_width_btn = 90;
-
 	protected int default_height_btn = 30;
 
+	
+	
 	public UdraPanel() {
 
 		addMouseWheelListener(new MouseWheelListener() {
@@ -95,11 +84,9 @@ public abstract class UdraPanel extends JPanel {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 
 				if (e.getWheelRotation() == -1)
-
 					zoomer(e);
 
 				else if (e.getWheelRotation() == 1)
-
 					dezoomer(e);
 
 			}
@@ -120,7 +107,6 @@ public abstract class UdraPanel extends JPanel {
 				boolean onBtn = false;
 
 				for (int i = 0; i < list_button.sizeRow(); i++)
-
 				{
 
 					if (list_button.get("type_position", i).toString().equals("fx"))
@@ -164,9 +150,7 @@ public abstract class UdraPanel extends JPanel {
 			public void mouseDragged(MouseEvent e) {
 
 				// TODO Auto-generated method stub
-
 				if (MousePress != null)
-
 				{
 
 					decalX = decalX + MousePress.x - e.getX();
@@ -190,31 +174,33 @@ public abstract class UdraPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
-
-				if (e.getClickCount() == 2)
-
+				if (e.getClickCount() == 1)
 				{
-
 					if (e.getButton() == MouseEvent.BUTTON1) {
-
-						zoomer(e);
-
+						System.out.println("gauche");
 					}
 
 					if (e.getButton() == MouseEvent.BUTTON3) {
+						System.out.println("droit");
+					}
+				}
+				if (e.getClickCount() == 2)
+				{
 
+					if (e.getButton() == MouseEvent.BUTTON1) {
+						zoomer(e);
+					}
+
+					if (e.getButton() == MouseEvent.BUTTON3) {
 						dezoomer(e);
-
 					}
 
 				}
 
 				for (int i = 0; i < list_button.sizeRow(); i++)
-
 				{
 
 					if (list_button.get("type_position", i).toString().equals("fx"))
-
 					{
 
 						if (e.getX() > list_button.getDbl("x", i)
@@ -225,9 +211,7 @@ public abstract class UdraPanel extends JPanel {
 							((Runnable) list_button.get("action", i)).run();
 
 					}
-
 					else
-
 					{
 
 						if (e.getX() > list_button.getDbl("x", i) * getWidth() / 100
@@ -244,41 +228,27 @@ public abstract class UdraPanel extends JPanel {
 			}
 
 			public void mouseEntered(MouseEvent e) {
-
 				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseExited(MouseEvent e) {
-
 				// TODO Auto-generated method stub
-
 			}
 
 			public void mousePressed(MouseEvent e) {
-
 				MousePress = new Point(e.getX(), e.getY());
-
 			}
 
 			public void mouseReleased(MouseEvent e) {
-
 				// TODO Auto-generated method stub
-
 				if (MousePress != null)
-
 				{
 
 					decalX = decalX + MousePress.x - e.getX();
-
 					decalY = decalY + MousePress.y - e.getY();
-
 					controlDecal();
-
 					MousePress = null;
-
 					erase();
-
 				}
 
 			}
@@ -288,37 +258,25 @@ public abstract class UdraPanel extends JPanel {
 	}
 
 	public void addButton(int x, int y, String type_position, String nom, Runnable rn)
-
 	{
-
 		list_button.insertALine(x, y, type_position, nom, rn);
-
 	}
 
 	public void addText(int x, int y, String type_position, String text)
-
 	{
-
 		Font f = null;
-
 		Color c = Color.black;
-
 		list_text.insertALine(x, y, type_position, text, c, f);
 
 	}
 
 	public void addText(int x, int y, String type_position, String text, Color c)
-
 	{
-
 		Font f = null;
-
 		list_text.insertALine(x, y, type_position, text, c, f);
-
 	}
 
 	public void addText(int x, int y, String type_position, String text, Color c, Font f)
-
 	{
 
 		list_text.insertALine(x, y, type_position, text, c, f);
@@ -346,7 +304,6 @@ public abstract class UdraPanel extends JPanel {
 	}
 
 	protected void zoomer(MouseEvent e)
-
 	{
 
 		// le zoom maximum ext limit� � 1 million car au del� des probl�mes de
@@ -373,7 +330,6 @@ public abstract class UdraPanel extends JPanel {
 	}
 
 	protected void dezoomer(MouseEvent e)
-
 	{
 
 		// diminue les d�calage en fonction du nouveau zoom
@@ -408,7 +364,6 @@ public abstract class UdraPanel extends JPanel {
 	}
 
 	public void controlDecal()
-
 	{
 
 		refreshParametre();
@@ -432,37 +387,25 @@ public abstract class UdraPanel extends JPanel {
 	}
 
 	protected int get_Pos_On_Screen_From_Y_value(double Yvalue)
-
 	{
-
 		return (int) (this.getHeight() - (Yvalue - ValueMinY) * EchelleY) - decalY;
-
 	}
 
 	protected void refreshEchelleY()
-
 	{
-
 		EchelleY = this.getHeight() / (ValueMaxY - ValueMinY) * zoom;
-
 	}
 
 	protected double GetEchelleX(Udra UdraIn)
-
 	{
-
 		double res = getWidth() / (double) (UdraIn.sizeRow() - 1) * zoom;
-
 		// UdraIn.Display();
-
 		return res;
-
 	}
 
 	// on ajoute un udra au graphique
 
 	public void setUdra(Udra nvUdra)
-
 	{
 
 		UdrasList.add(nvUdra);
@@ -470,7 +413,6 @@ public abstract class UdraPanel extends JPanel {
 	}
 
 	public void generic_paintComponent(Graphics g)
-
 	{
 
 		// dessine les text rajout�s
@@ -532,9 +474,7 @@ public abstract class UdraPanel extends JPanel {
 						(Integer) list_button.get("y", i) + 20);
 
 			}
-
 			else
-
 			{
 
 				g.setColor(Color.GRAY);
@@ -555,16 +495,20 @@ public abstract class UdraPanel extends JPanel {
 
 	}
 
+	//Affiche en transparence la boite de mesage
+	public void setTransparenceBoiteMessageprct(int transparenceBoiteMessage) {
+		this.transparenceBoiteMessagePrct = transparenceBoiteMessage * 255 / 100;
+	}
+
+	
+	
 	// Efface le contenu
-
 	public void erase() {
-
 		repaint();
-
 	}
 
 	// rafraichit tout les param�tres permttant le dessin, �vite de
-	// r��x�cuter tout les calculs
+	// rexeccuter tout les calculs
 
 	public abstract void refreshParametre();
 

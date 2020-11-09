@@ -66,20 +66,19 @@ public class Drawing_Line_Udra extends DrawingUdra {
 		// The panel is the graphical zone of the frame
 		Panel = new Udra_Line_Panel();
 		setContentPane(Panel);
+		Panel.erase();
 	}
 
+	
 	public Drawing_Line_Udra add(Udra in)
-
 	{
-
 		add(in, Udra_Line_Panel.ColValue, Udra_Line_Panel.ColData, Udra_Line_Panel.ColColor);
-
 		return this;
-
 	}
 
+	
+	
 	public Drawing_Line_Udra add(Udra in, String colData, String colValue)
-
 	{
 
 		return add(in, in.get_the_index_of_title_from_his_Name(colData),
@@ -102,7 +101,6 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	public Drawing_Line_Udra add(Udra in, String colData, String colValue, Color colColor)
-
 	{
 
 		Udra nouveau = in.copyFrom(in);
@@ -124,48 +122,34 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	public Drawing_Line_Udra add(Udra in, int colData, int colValue, int colColor)
-
 	{
-
 		Udra nvUdra = Udra.copyFrom(in);
 
-		nvUdra.insertAColumn(colValueDisplayStr); // cette colonne indique la valeur à afficher (utile pour l'echelle
-													// logarithmique)
+		nvUdra.insertAColumn(colValueDisplayStr); // cette colonne indique la valeur à afficher (utile pour l'echelle logarithmique)
 
 		// transforme les valeurs qui ne sont des nombres en mode invisible
 
 		for (int i = 0; i < nvUdra.sizeRow(); i++)
-
 		{
 
 			if (!nvUdra.isNumber(colValue, i))
 			{
-
 				nvUdra.setAvalue(colData, i, "Don't display");
-
 				nvUdra.setAvalue(colColor, i, Color.WHITE);
-
 			}
 
 			nvUdra.setAvalue(colValueDisplayStr, i, nvUdra.get(colValue, i));
-
 		}
 
-		// Attention la méthode take only supprime les lignes vides
 
-		nvUdra = TakeOnly(nvUdra, colValue, colData, colColor,
-				nvUdra.get_the_index_of_title_from_his_Name(colValueDisplayStr));
+		nvUdra = TakeOnly(nvUdra, colValue, colData, colColor,	nvUdra.get_the_index_of_title_from_his_Name(colValueDisplayStr));
 
 		Panel.setUdra(nvUdra);
-
 		Panel.erase();
-
 		return this;
-
 	}
 
 	public Drawing_Line_Udra setLogarithme(boolean logActif)
-
 	{
 
 		((Udra_Line_Panel) Panel).setLogarithme(logActif);
@@ -203,11 +187,8 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	// add a Udra to the frame
-
 	@Deprecated
-
 	public void setUdra(Udra UdraIn, String colValue)
-
 	{
 
 		setUdra(UdraIn, UdraIn.get_the_index_of_title_from_his_Name(colValue));
@@ -215,9 +196,7 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	@Deprecated
-
 	public void setUdra(Udra UdraIn, int colValue)
-
 	{
 
 		setUdra(UdraIn, colValue, -1);
@@ -225,11 +204,8 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	// add a Udra to the frame
-
 	@Deprecated
-
 	public void setUdra(Udra UdraIn, String colValue, String colInfo)
-
 	{
 
 		setUdra(UdraIn, UdraIn.get_the_index_of_title_from_his_Name(colValue),
@@ -238,21 +214,14 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	@Deprecated
-
 	public void setUdra(Udra UdraIn, int colValue, int colInfo)
-
 	{
-
 		setUdra(UdraIn, colValue, colInfo, -1);
-
 	}
 
 	// add a Udra to the frame
-
 	@Deprecated
-
 	public void setUdra(Udra UdraIn, String colValue, String colInfo, Color color)
-
 	{
 
 		setUdra(UdraIn, UdraIn.get_the_index_of_title_from_his_Name(colValue),
@@ -261,9 +230,7 @@ public class Drawing_Line_Udra extends DrawingUdra {
 	}
 
 	@Deprecated
-
 	public void setUdra(Udra UdraIn, int colValue, int colInfo, Color color)
-
 	{
 
 		// reorganise the new Udra
@@ -379,17 +346,13 @@ public class Drawing_Line_Udra extends DrawingUdra {
 		// parcours le nouveau Udra pour définir les couleurs
 
 		for (int i = 0; i < nvUdra.sizeRow(); i++)
-
 		{
 
 			// parcours les contraintes
-
 			for (int it_contrainte = 0; it_contrainte < ListContrainte.length; it_contrainte++)
-
 			{
 
 				// compare la contrainte du Udra à notre liste de contraintes
-
 				if (nvUdra.get(Udra_Line_Panel.ColColor, i).toString().equals(ListContrainte[it_contrainte].contrainte))
 
 				{
@@ -402,14 +365,11 @@ public class Drawing_Line_Udra extends DrawingUdra {
 
 		}
 
-		// control qu'il n'y est plus de string dans la colonne des couleurs
-
+		// control qu'il n'y ai plus de string dans la colonne des couleurs
 		for (int i = 0; i < nvUdra.sizeRow(); i++)
-
 		{
 
 			if (nvUdra.get(Udra_Line_Panel.ColColor, i) instanceof String)
-
 				nvUdra.setAvalue(Udra_Line_Panel.ColColor, i, Color.BLACK);
 
 		}
@@ -420,4 +380,9 @@ public class Drawing_Line_Udra extends DrawingUdra {
 
 	}
 
+	
+
+
+	
+	
 }
