@@ -152,10 +152,8 @@ public class Udra_Pie_Panel extends UdraPanel {
 
 	@Override
 	public void refreshParametre() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
-
 
 
 
@@ -168,7 +166,7 @@ public class Udra_Pie_Panel extends UdraPanel {
 			  erase();
 			
 			//take a pause to let GUI drawed
-			  try {				Thread.sleep(10);			} catch (InterruptedException e1) {		}
+			  try {		Thread.sleep(10);		} catch (InterruptedException e1) {		}
 			  
 		}
 		
@@ -176,23 +174,6 @@ public class Udra_Pie_Panel extends UdraPanel {
 		  erase();
 		
 	}
-
-
-
-
-
-	  
-	  
-	 
-	
-	
-		  
-
-	  
-	  
-
-
-
 
 
 
