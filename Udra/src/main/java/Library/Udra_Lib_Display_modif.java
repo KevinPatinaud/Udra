@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.CellEditor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -173,7 +174,21 @@ public class Udra_Lib_Display_modif {
 
 	                    public void actionPerformed(ActionEvent arg0) {
 
-	                    	udra_in.insertAColumn( String.valueOf( udra_in.sizeColumn() ) );
+	                    	String nameNewColumn =  JOptionPane.showInputDialog("Please set the name of the new column : ");;
+	                    	boolean columnCreated = false;
+	                    	
+	                    	while (! columnCreated  && ! nameNewColumn.equals(""))
+	                    	{
+	                    		if ( udra_in.get_the_index_of_title_from_his_Name(nameNewColumn) == -1)
+		                    	{
+		                    		udra_in.insertAColumn( nameNewColumn, "" );
+		                    		columnCreated = true;
+		                    	}
+		                    	else
+		                    	{
+		                    		nameNewColumn =  JOptionPane.showInputDialog("Sorry this column already exist, please set another name : ");	
+		                    	}
+	                    	}
 
 	                        frame.dispose();
 	                        Windows_is_display = false;
