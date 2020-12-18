@@ -24,7 +24,7 @@ import graphique.Drawing_Square_Udra;
 
 
 /**
- * @author Kï¿½vin Patinaud
+ * @author Kevin Patinaud
  *
  * Signification :
  * UDRA pour Unique Data Representation & Analyse fait rï¿½fï¿½rence au type de gestion commune des donnï¿½es.

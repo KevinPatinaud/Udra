@@ -34,7 +34,7 @@ public class Udra_Lib_Display_modif {
 		public static void display_With_Modification_Ability(  Udra udra_in ,  final String ... TitleFrame )
 		{
 			Udra_Lib_Display_modif udra_display = new Udra_Lib_Display_modif();
-			udra_display.display_With_Modification_Ability(udra_in, TitleFrame);
+			udra_display.display_With_Modification_Ability_start(udra_in, TitleFrame);
 		}
 		
 	 
@@ -206,7 +206,7 @@ public class Udra_Lib_Display_modif {
 	        
 	        while ( Windows_is_display  )
 	        {
-	            try {    Thread.sleep( 1 );    } catch (InterruptedException e) {    }
+	            try {    Thread.sleep( 100 );    } catch (InterruptedException e) {    }
 	        }
 	        
 	    }	
