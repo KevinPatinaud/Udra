@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -27,30 +28,53 @@ public class Udra_Lib_Display_modif {
 	 private int posY_interface = 0;
 	 private int height = 500;
 	 private int width = 500;
-	
+ 	 
+	 //top d'affichage des bouttons
+	 private boolean showBtn_AddANewLine = false;
+ 	 private boolean showBtn_AddANewColumn = false;
+	 
+
+
+	 public static int getId_NO_BUTTON()
+	 {
+		 return 0;
+	 }
+ 	 
+	 public static int getId_ALL_BUTTON()
+	 {
+		 return getIdBtn_ADD_A_NEW_LINE() + getIdBtn_ADD_A_NEW_COLUMN();
+	 }  
+	 public static int getIdBtn_ADD_A_NEW_LINE()
+	 {
+		 return 1;
+	 }
 	    
+	 public static int getIdBtn_ADD_A_NEW_COLUMN()
+	 {
+		 return 2;
+	 }
 	 
 	 
 		
-		public static void display_With_Modification_Ability(  Udra udra_in ,  final String ... TitleFrame )
+		public static void display_With_Modification_Ability(  Udra udra_in ,  String TitleFrame, int buttonToDisplay, int [] fixedColumn )
 		{
 			Udra_Lib_Display_modif udra_display = new Udra_Lib_Display_modif();
-			udra_display.display_With_Modification_Ability_start(udra_in, TitleFrame);
+			udra_display.display_With_Modification_Ability_start(udra_in, TitleFrame, buttonToDisplay, fixedColumn);
 		}
 		
 	 
 	 
 	 
-	    protected void display_With_Modification_Ability_start( Udra udra_in ,  final String ... TitleFrame) // display the array to a graphical user interface, it's possible to give a title to the array
+	    protected void display_With_Modification_Ability_start( Udra udra_in ,  String  TitleFrame, int buttonToDisplay, int [] fixedColumn) // display the array to a graphical user interface, it's possible to give a title to the array
 	    {
 	    	Windows_is_display = true;
 	   	 	recreer =false;
 	    	
-	        display_With_Modification_AbilityAction( udra_in , TitleFrame );
+	        display_With_Modification_AbilityAction( udra_in , TitleFrame , buttonToDisplay, fixedColumn);
 	    
 	        while ( recreer )
 	        {
-	            display_With_Modification_AbilityAction( udra_in , TitleFrame );
+	            display_With_Modification_AbilityAction( udra_in , TitleFrame , buttonToDisplay, fixedColumn);
 	        }
 	            
 	    }
@@ -58,13 +82,36 @@ public class Udra_Lib_Display_modif {
 	    
 	    
 	    
-	    public void display_With_Modification_AbilityAction( final Udra udra_in , final String ... TitleFrame) // display the array to a graphical user interface, it's possible to give a title to the array
+	    public void display_With_Modification_AbilityAction( final Udra udra_in , String TitleFrame, int buttonToDisplay, int [] fixedColumn) // display the array to a graphical user interface, it's possible to give a title to the array
 	    {
 	        
 	    	Windows_is_display = true;
 
+	    	//Gère les tops d'affichage des bouttons
+	    	 if( buttonToDisplay == getId_ALL_BUTTON())
+             {
+	    		 showBtn_AddANewLine = true;
+	    		 showBtn_AddANewColumn = true;
+             }
+	    	 
+	    	 int cmptBtn = buttonToDisplay;
+	    	 
+	    	 if ( cmptBtn >= getIdBtn_ADD_A_NEW_COLUMN())
+	    	 {
+	    		 showBtn_AddANewColumn = true;
+	    		 cmptBtn = cmptBtn - getIdBtn_ADD_A_NEW_COLUMN();
+	    	 }
+
+	    	 
+	    	 if ( cmptBtn >= getIdBtn_ADD_A_NEW_LINE())
+	    	 {
+	    		 showBtn_AddANewLine = true;
+	    		 cmptBtn = cmptBtn - getIdBtn_ADD_A_NEW_LINE();
+	    	 }
+
 	        
-	        final DefaultTableModel Liste = new DefaultTableModel() { //tranform the array to TableModel
+	    	//tranform the Udra to TableModel
+	        final DefaultTableModel Liste = new DefaultTableModel() { 
 	            
 	            
 	            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {    
@@ -117,12 +164,17 @@ public class Udra_Lib_Display_modif {
 	               
 	                final JTable table = new JTable();
 	                table.setModel(Liste);
+	                
 	                final JFrame frame = new JFrame();
-	                if (TitleFrame.length > 0)
-	                    frame.setTitle(TitleFrame[0]);
+	                if (TitleFrame != null)
+	                    frame.setTitle(TitleFrame);
 	                else
 	                    frame.setTitle(udra_in.getName());
-	                frame.add(new JScrollPane(table));
+	                
+	                //Permet de configurer les scrollbar
+	                JScrollPane scrollPanel = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	                table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	                frame.add(scrollPanel);
 	                
 	                //create the button panel
 	                JPanel pan = new JPanel();
@@ -143,68 +195,77 @@ public class Udra_Lib_Display_modif {
 
 	                  });
 	                pan.add(valider);
-	                JButton nouvLigne = new JButton("Add a new line");
-	                nouvLigne.addActionListener(    new ActionListener(){
-
-	                    public void actionPerformed(ActionEvent arg0) {
-
-	                    	udra_in.insertALine();
-
-	                        frame.dispose();
-	                        Windows_is_display = false;
-	                        recreer = true;
-	                        posX_interface = (int) frame.getLocation().getX();
-	                        posY_interface = (int) frame.getLocation().getY();
-	                        width = frame.getWidth();
-	                        height = frame.getHeight();
-
-	                        
-	                        
-	                    }         
-
-	                  });
+	                
+	                if( showBtn_AddANewLine )
+	                {
+		                JButton nouvLigne = new JButton("Add a new line");
+		                nouvLigne.addActionListener(    new ActionListener(){
+	
+		                    public void actionPerformed(ActionEvent arg0) {
+	
+		                    	udra_in.insertALine();
+	
+		                        frame.dispose();
+		                        Windows_is_display = false;
+		                        recreer = true;
+		                        posX_interface = (int) frame.getLocation().getX();
+		                        posY_interface = (int) frame.getLocation().getY();
+		                        width = frame.getWidth();
+		                        height = frame.getHeight();
+	
+		                        
+		                        
+		                    }         
+	
+		                  });
+		                
+		                
+		                pan.add(nouvLigne);
+	                }
 	                
 	                
-	                pan.add(nouvLigne);
-	                
-	                
-	                
-	                JButton nouvColumn = new JButton("Add a new column");
-	                nouvColumn.addActionListener(    new ActionListener(){
 
-	                    public void actionPerformed(ActionEvent arg0) {
-
-	                    	String nameNewColumn =  JOptionPane.showInputDialog("Please set the name of the new column : ");;
-	                    	boolean columnCreated = false;
-	                    	
-	                    	while (! columnCreated  && ! nameNewColumn.equals(""))
-	                    	{
-	                    		if ( udra_in.get_the_index_of_title_from_his_Name(nameNewColumn) == -1)
+	                if( showBtn_AddANewColumn)
+	                {
+		                JButton nouvColumn = new JButton("Add a new column");
+		                nouvColumn.addActionListener(    new ActionListener(){
+	
+		                    public void actionPerformed(ActionEvent arg0) {
+	
+		                    	String nameNewColumn =  JOptionPane.showInputDialog("Please set the name of the new column : ");;
+		                    	boolean columnCreated = false;
+		                    	
+		                    	if ( nameNewColumn != null)
 		                    	{
-		                    		udra_in.insertAColumn( nameNewColumn, "" );
-		                    		columnCreated = true;
+			                    	while (! columnCreated  && ! nameNewColumn.equals(""))
+			                    	{
+			                    		if ( udra_in.get_the_index_of_title_from_his_Name(nameNewColumn) == -1)
+				                    	{
+				                    		udra_in.insertAColumn( nameNewColumn, "" );
+				                    		columnCreated = true;
+				                    	}
+				                    	else
+				                    	{
+				                    		nameNewColumn =  JOptionPane.showInputDialog("Sorry this column already exist, please set another name : ");	
+				                    	}
+			                    	}
 		                    	}
-		                    	else
-		                    	{
-		                    		nameNewColumn =  JOptionPane.showInputDialog("Sorry this column already exist, please set another name : ");	
-		                    	}
-	                    	}
-
-	                        frame.dispose();
-	                        Windows_is_display = false;
-	                        recreer = true;
-	                        posX_interface = (int) frame.getLocation().getX();
-	                        posY_interface = (int) frame.getLocation().getY();
-	                        width = frame.getWidth();
-	                        height = frame.getHeight();
-	                        
-
-	                    }         
-
-	                  });
-	                
-	                
-	                pan.add(nouvColumn);
+		                        frame.dispose();
+		                        Windows_is_display = false;
+		                        recreer = true;
+		                        posX_interface = (int) frame.getLocation().getX();
+		                        posY_interface = (int) frame.getLocation().getY();
+		                        width = frame.getWidth();
+		                        height = frame.getHeight();
+		                        
+	
+		                    }         
+	
+		                  });
+		                
+		                
+		                pan.add(nouvColumn);
+	                }
 	                
 	                frame.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
 	                frame.getContentPane().add(pan, BorderLayout.SOUTH);	                

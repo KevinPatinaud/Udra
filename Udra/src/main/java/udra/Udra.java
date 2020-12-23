@@ -2008,20 +2008,52 @@ public Udra copyLine(int line)
     }
 	
 	
-	
-	
-	    
-	    /**
-	     * @param TitleFrame
-	     */
-	    public void display_With_Modification_Ability(final String ... TitleFrame) // display the array to a graphical user interface, it's possible to give a title to the array
-	    {
-	    	Udra_Lib_Display_modif.display_With_Modification_Ability(this, TitleFrame);
-	    }
-	    
-	    
-	    
-	    
+
+    public static int display_With_Modification_Ability_Get_id_NO_BUTTON(){ return Udra_Lib_Display_modif.getId_NO_BUTTON(); }
+    public static int display_With_Modification_Ability_Get_id_ALL_BUTTON(){ return Udra_Lib_Display_modif.getId_ALL_BUTTON(); }
+    public static int display_With_Modification_Ability_Get_id_Button_ADD_A_NEW_LINE() { return Udra_Lib_Display_modif.getIdBtn_ADD_A_NEW_LINE();}
+    public static int display_With_Modification_Ability_Get_id_Button_ADD_A_NEW_COLUMN() { return Udra_Lib_Display_modif.getIdBtn_ADD_A_NEW_COLUMN();}
+    
+
+    
+    /**
+     * 
+     */
+    public void display_With_Modification_Ability() // display the Udra to a graphical user interface, to manually modified it (the program was stopped until the closed of the window)
+    {
+    	display_With_Modification_Ability(null);
+    }
+
+    
+    /**
+     * @param TitleFrame
+     */
+    public void display_With_Modification_Ability(String TitleFrame) // see below, add a title to the GUI
+    {
+    	display_With_Modification_Ability( TitleFrame, display_With_Modification_Ability_Get_id_ALL_BUTTON());
+    }
+    
+    
+
+    /**
+     * @param TitleFrame
+     */
+    public void display_With_Modification_Ability(String TitleFrame, int buttonToDisplay) // see below, set which button should be display (all by defaults)
+    {
+    	display_With_Modification_Ability(TitleFrame, buttonToDisplay, -1);
+    }
+    
+    
+    
+
+    /**
+     * @param TitleFrame
+     */
+    public void display_With_Modification_Ability(String TitleFrame, int buttonToDisplay , final int ... columnFixe) // see below, set specifics column should be fixed (-1 : none by defaults)
+    {
+    	Udra_Lib_Display_modif.display_With_Modification_Ability(this, TitleFrame, buttonToDisplay, columnFixe );
+    }
+    
 	
 		
 

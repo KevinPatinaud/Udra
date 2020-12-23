@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -148,8 +149,11 @@ public class Udra_Lib_Display {
                 	frame.setTitle(TitleFrame);
                 else
                 	frame.setTitle(udra_in.getName());
-                	
-                frame.add(new JScrollPane(table));
+                
+                //Permet de configurer les scrollbar
+                JScrollPane scrollPanel = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                frame.add(scrollPanel);
                 frame.pack();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
