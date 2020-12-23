@@ -2040,7 +2040,7 @@ public Udra copyLine(int line)
      */
     public void display_With_Modification_Ability(String TitleFrame, int buttonToDisplay) // see below, set which button should be display (all by defaults)
     {
-    	display_With_Modification_Ability(TitleFrame, buttonToDisplay, -1);
+    	display_With_Modification_Ability(TitleFrame, buttonToDisplay, 0);
     }
     
     
@@ -2049,9 +2049,9 @@ public Udra copyLine(int line)
     /**
      * @param TitleFrame
      */
-    public void display_With_Modification_Ability(String TitleFrame, int buttonToDisplay , final int ... columnFixe) // see below, set specifics column should be fixed (-1 : none by defaults)
+    public void display_With_Modification_Ability(String TitleFrame, int buttonToDisplay , int nmbColumnToFixe) // see below, set specifics column should be fixed (-1 : none by defaults)
     {
-    	Udra_Lib_Display_modif.display_With_Modification_Ability(this, TitleFrame, buttonToDisplay, columnFixe );
+    	Udra_Lib_Display_modif.display_With_Modification_Ability(this, TitleFrame, buttonToDisplay, nmbColumnToFixe );
     }
     
 	

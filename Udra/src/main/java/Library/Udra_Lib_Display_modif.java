@@ -1,6 +1,7 @@
 package Library;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,25 +57,25 @@ public class Udra_Lib_Display_modif {
 	 
 	 
 		
-		public static void display_With_Modification_Ability(  Udra udra_in ,  String TitleFrame, int buttonToDisplay, int [] fixedColumn )
+		public static void display_With_Modification_Ability(  Udra udra_in ,  String TitleFrame, int buttonToDisplay, int nmbColumnToFixe )
 		{
 			Udra_Lib_Display_modif udra_display = new Udra_Lib_Display_modif();
-			udra_display.display_With_Modification_Ability_start(udra_in, TitleFrame, buttonToDisplay, fixedColumn);
+			udra_display.display_With_Modification_Ability_start(udra_in, TitleFrame, buttonToDisplay, nmbColumnToFixe);
 		}
 		
 	 
 	 
 	 
-	    protected void display_With_Modification_Ability_start( Udra udra_in ,  String  TitleFrame, int buttonToDisplay, int [] fixedColumn) // display the array to a graphical user interface, it's possible to give a title to the array
+	    protected void display_With_Modification_Ability_start( Udra udra_in ,  String  TitleFrame, int buttonToDisplay, int nmbColumnToFixe) // display the array to a graphical user interface, it's possible to give a title to the array
 	    {
 	    	Windows_is_display = true;
 	   	 	recreer =false;
 	    	
-	        display_With_Modification_AbilityAction( udra_in , TitleFrame , buttonToDisplay, fixedColumn);
+	        display_With_Modification_AbilityAction( udra_in , TitleFrame , buttonToDisplay, nmbColumnToFixe);
 	    
 	        while ( recreer )
 	        {
-	            display_With_Modification_AbilityAction( udra_in , TitleFrame , buttonToDisplay, fixedColumn);
+	            display_With_Modification_AbilityAction( udra_in , TitleFrame , buttonToDisplay, nmbColumnToFixe);
 	        }
 	            
 	    }
@@ -82,7 +83,7 @@ public class Udra_Lib_Display_modif {
 	    
 	    
 	    
-	    public void display_With_Modification_AbilityAction( final Udra udra_in , String TitleFrame, int buttonToDisplay, int [] fixedColumn) // display the array to a graphical user interface, it's possible to give a title to the array
+	    public void display_With_Modification_AbilityAction( final Udra udra_in , String TitleFrame, int buttonToDisplay, int nmbColumnToFixe) // display the array to a graphical user interface, it's possible to give a title to the array
 	    {
 	        
 	    	Windows_is_display = true;
@@ -170,11 +171,16 @@ public class Udra_Lib_Display_modif {
 	                    frame.setTitle(TitleFrame);
 	                else
 	                    frame.setTitle(udra_in.getName());
+
+
 	                
 	                //Permet de configurer les scrollbar
 	                JScrollPane scrollPanel = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	                table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	                frame.add(scrollPanel);
+	                frame.add(scrollPanel); //ajoute le panel à la frame
+	                
+	                
+
 	                
 	                //create the button panel
 	                JPanel pan = new JPanel();
@@ -213,8 +219,6 @@ public class Udra_Lib_Display_modif {
 		                        width = frame.getWidth();
 		                        height = frame.getHeight();
 	
-		                        
-		                        
 		                    }         
 	
 		                  });
