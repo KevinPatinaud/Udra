@@ -260,7 +260,6 @@ public class Udra_Lib_Display_modif {
 		                        
 	
 		                    }         
-	
 		                  });
 		                
 		                
