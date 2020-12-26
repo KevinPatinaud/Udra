@@ -2040,7 +2040,7 @@ public Udra copyLine(int line)
      */
     public void display_With_Modification_Ability(String TitleFrame, int buttonToDisplay) // see below, set which button should be display (all by defaults)
     {
-    	display_With_Modification_Ability(TitleFrame, buttonToDisplay, 0);
+    	display_With_Modification_Ability(TitleFrame, buttonToDisplay, 1);
     }
     
     

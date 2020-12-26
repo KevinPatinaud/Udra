@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.CellEditor;
 import javax.swing.JButton;
@@ -13,14 +15,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import udra.Udra;
 
-public class Udra_Lib_Display_modif {
+public class Udra_Lib_Display_modif implements ChangeListener, PropertyChangeListener {
 
 	
 	 private boolean Windows_is_display = true;
@@ -29,10 +36,17 @@ public class Udra_Lib_Display_modif {
 	 private int posY_interface = 0;
 	 private int height = 500;
 	 private int width = 500;
+	 private JFrame frame;
  	 
 	 //top d'affichage des bouttons
 	 private boolean showBtn_AddANewLine = false;
  	 private boolean showBtn_AddANewColumn = false;
+ 	 
+ 	 
+ 	//Permet de gérer les colonnes fixes
+ 	private JTable main;
+ 	private JTable fixed;
+ 	private JScrollPane scrollPane;
 	 
 
 
@@ -110,9 +124,12 @@ public class Udra_Lib_Display_modif {
 	    		 cmptBtn = cmptBtn - getIdBtn_ADD_A_NEW_LINE();
 	    	 }
 
+	    	 
+	    	 
+	    	 
 	        
 	    	//tranform the Udra to TableModel
-	        final DefaultTableModel Liste = new DefaultTableModel() { 
+	        final DefaultTableModel grille = new DefaultTableModel() { 
 	            
 	            
 	            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {    
@@ -157,131 +174,163 @@ public class Udra_Lib_Display_modif {
 	        
 	        
 	        
-	        
-	        Runnable r = new Runnable() {
-
-	            
-	            public void run() {
+	   
 	               
-	                final JTable table = new JTable();
-	                table.setModel(Liste);
-	                
-	                final JFrame frame = new JFrame();
-	                if (TitleFrame != null)
-	                    frame.setTitle(TitleFrame);
-	                else
-	                    frame.setTitle(udra_in.getName());
+
+            //cré la frame (fenetre)
+            frame = new JFrame();
+            if (TitleFrame != null)
+                frame.setTitle(TitleFrame);
+            else
+                frame.setTitle(udra_in.getName());
 
 
-	                
-	                //Permet de configurer les scrollbar
-	                JScrollPane scrollPanel = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	                table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	                frame.add(scrollPanel); //ajoute le panel à la frame
-	                
-	                
+            //on cré une premierre grille dynamique
+            main = new JTable();
+            main.setModel(grille);
+	        main.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    		main.setAutoCreateColumnsFromModel( false );
+    		main.addPropertyChangeListener( this );
 
-	                
-	                //create the button panel
-	                JPanel pan = new JPanel();
-	                JButton valider = new JButton("Valider");
-	                valider.addActionListener(    new ActionListener(){
+    		this.scrollPane = new JScrollPane( main );
+    		
 
-	                    public void actionPerformed(ActionEvent arg0) {
-	                        CellEditor c = table.getCellEditor();
-	                        boolean stop=false;
-	                        if (c!=null) stop=c.stopCellEditing();
-	                        
-	                        
-	                        frame.dispose();
-	                        Windows_is_display = false;
-	                        recreer = false;
+            
+            //create the button panel
+            JPanel pan = new JPanel();
+            JButton valider = new JButton("Valider");
+            valider.addActionListener(    new ActionListener(){
 
-	                    }         
+                public void actionPerformed(ActionEvent arg0) {
+                    CellEditor c = main.getCellEditor();
+                    boolean stop=false;
+                    if (c!=null) stop=c.stopCellEditing();
+                    
+                    
+                    frame.dispose();
+                    Windows_is_display = false;
+                    recreer = false;
 
-	                  });
-	                pan.add(valider);
-	                
-	                if( showBtn_AddANewLine )
-	                {
-		                JButton nouvLigne = new JButton("Add a new line");
-		                nouvLigne.addActionListener(    new ActionListener(){
-	
-		                    public void actionPerformed(ActionEvent arg0) {
-	
-		                    	udra_in.insertALine();
-	
-		                        frame.dispose();
-		                        Windows_is_display = false;
-		                        recreer = true;
-		                        posX_interface = (int) frame.getLocation().getX();
-		                        posY_interface = (int) frame.getLocation().getY();
-		                        width = frame.getWidth();
-		                        height = frame.getHeight();
-	
-		                    }         
-	
-		                  });
-		                
-		                
-		                pan.add(nouvLigne);
-	                }
-	                
-	                
+                }         
 
-	                if( showBtn_AddANewColumn)
-	                {
-		                JButton nouvColumn = new JButton("Add a new column");
-		                nouvColumn.addActionListener(    new ActionListener(){
-	
-		                    public void actionPerformed(ActionEvent arg0) {
-	
-		                    	String nameNewColumn =  JOptionPane.showInputDialog("Please set the name of the new column : ");;
-		                    	boolean columnCreated = false;
-		                    	
-		                    	if ( nameNewColumn != null)
+              });
+            pan.add(valider);
+            
+            if( showBtn_AddANewLine )
+            {
+                JButton nouvLigne = new JButton("Add a new line");
+                nouvLigne.addActionListener(    new ActionListener(){
+
+                    public void actionPerformed(ActionEvent arg0) {
+
+                    	udra_in.insertALine();
+
+                        frame.dispose();
+                        Windows_is_display = false;
+                        recreer = true;
+                        posX_interface = (int) frame.getLocation().getX();
+                        posY_interface = (int) frame.getLocation().getY();
+                        width = frame.getWidth();
+                        height = frame.getHeight();
+
+                    }         
+
+                  });
+                
+                
+                pan.add(nouvLigne);
+            }
+            
+            
+
+            if( showBtn_AddANewColumn)
+            {
+                JButton nouvColumn = new JButton("Add a new column");
+                nouvColumn.addActionListener(    new ActionListener(){
+
+                    public void actionPerformed(ActionEvent arg0) {
+
+                    	String nameNewColumn =  JOptionPane.showInputDialog("Please set the name of the new column : ");;
+                    	boolean columnCreated = false;
+                    	
+                    	if ( nameNewColumn != null)
+                    	{
+	                    	while (! columnCreated  && ! nameNewColumn.equals(""))
+	                    	{
+	                    		if ( udra_in.get_the_index_of_title_from_his_Name(nameNewColumn) == -1)
 		                    	{
-			                    	while (! columnCreated  && ! nameNewColumn.equals(""))
-			                    	{
-			                    		if ( udra_in.get_the_index_of_title_from_his_Name(nameNewColumn) == -1)
-				                    	{
-				                    		udra_in.insertAColumn( nameNewColumn, "" );
-				                    		columnCreated = true;
-				                    	}
-				                    	else
-				                    	{
-				                    		nameNewColumn =  JOptionPane.showInputDialog("Sorry this column already exist, please set another name : ");	
-				                    	}
-			                    	}
+		                    		udra_in.insertAColumn( nameNewColumn, "" );
+		                    		columnCreated = true;
 		                    	}
-		                        frame.dispose();
-		                        Windows_is_display = false;
-		                        recreer = true;
-		                        posX_interface = (int) frame.getLocation().getX();
-		                        posY_interface = (int) frame.getLocation().getY();
-		                        width = frame.getWidth();
-		                        height = frame.getHeight();
-		                        
-	
-		                    }         
-		                  });
-		                
-		                
-		                pan.add(nouvColumn);
-	                }
-	                
-	                frame.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
-	                frame.getContentPane().add(pan, BorderLayout.SOUTH);	                
-	                frame.pack();
-	                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	                frame.setLocation(posX_interface, posY_interface);
-	                frame.setSize(width, height);
-	                
-	                frame.setVisible(true);             
-	            }
-	        };
-   
-	        EventQueue.invokeLater(r);
+		                    	else
+		                    	{
+		                    		nameNewColumn =  JOptionPane.showInputDialog("Sorry this column already exist, please set another name : ");	
+		                    	}
+	                    	}
+                    	}
+                        frame.dispose();
+                        Windows_is_display = false;
+                        recreer = true;
+                        posX_interface = (int) frame.getLocation().getX();
+                        posY_interface = (int) frame.getLocation().getY();
+                        width = frame.getWidth();
+                        height = frame.getHeight();
+                        
+
+                    }         
+                  });
+                
+                
+                pan.add(nouvColumn);
+            }
+            
+            
+            
+    		//  Use the existing table to create a new table sharing
+    		//  the DataModel and ListSelectionModel
+
+    		int totalColumns = main.getColumnCount();
+
+    		// La Jtable fixed contiendra les colonnes fixes
+    		fixed = new JTable();
+    		fixed.setAutoCreateColumnsFromModel( false );
+    		fixed.setModel( main.getModel() );
+    		fixed.setSelectionModel( main.getSelectionModel() );
+    		fixed.setFocusable( false );
+    		
+    		
+    		
+    		//  Remove the fixed columns from the main table and add them to the fixed table
+    		for (int i = 0; i < nmbColumnToFixe; i++)
+    		{
+    	        TableColumnModel columnModel = main.getColumnModel();
+    	        TableColumn column = columnModel.getColumn( 0 );
+        	    columnModel.removeColumn( column );
+    			fixed.getColumnModel().addColumn( column );
+    		}
+
+    		
+    		//  Add the fixed table to the scroll pane
+
+            fixed.setPreferredScrollableViewportSize(fixed.getPreferredSize());
+    		scrollPane.setRowHeaderView( fixed );
+    		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixed.getTableHeader());
+
+    		
+
+    		scrollPane.getRowHeader().addChangeListener( this );
+    		
+            
+            frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+            frame.getContentPane().add(pan, BorderLayout.SOUTH);	                
+            frame.pack();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setLocation(posX_interface, posY_interface);
+            frame.setSize(width, height);
+            
+            frame.setVisible(true);  
+       
+            	
 	        
 	        while ( Windows_is_display  )
 	        {
@@ -293,6 +342,51 @@ public class Udra_Lib_Display_modif {
 	
 	
 	
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+		
+		/*
+		 *  Return the table being used in the row header
+		 */
+		public JTable getFixedTable()
+		{
+			return fixed;
+		}
+	//
+	//  Implement the ChangeListener
+	//
+		public void stateChanged(ChangeEvent e)
+		{
+			//  Sync the scroll pane scrollbar with the row header
+			JViewport viewport = (JViewport) e.getSource();
+			scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
+		}
+	//
+	//  Implement the PropertyChangeListener
+	//
+		public void propertyChange(PropertyChangeEvent e)
+		{
+			//  Keep the fixed table in sync with the main table
+
+			if ("selectionModel".equals(e.getPropertyName()))
+			{
+				fixed.setSelectionModel( main.getSelectionModel() );
+			}
+
+			if ("model".equals(e.getPropertyName()))
+			{
+				fixed.setModel( main.getModel() );
+			}
+		}
+		
 	
 	
 }
