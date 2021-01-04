@@ -152,7 +152,7 @@ public class Udra_Lib_Display {
                 
                 //Permet de configurer les scrollbar
                 JScrollPane scrollPanel = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            //    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                 frame.add(scrollPanel);
                 frame.pack();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
