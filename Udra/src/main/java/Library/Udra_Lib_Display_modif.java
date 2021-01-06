@@ -232,6 +232,7 @@ public class Udra_Lib_Display_modif implements ChangeListener, PropertyChangeLis
                         posY_interface = (int) frame.getLocation().getY();
                         width = frame.getWidth();
                         height = frame.getHeight();
+                        
 
                     }         
 
@@ -285,43 +286,58 @@ public class Udra_Lib_Display_modif implements ChangeListener, PropertyChangeLis
             }
             
             
+            //___________________________________________________________________________________________________________________
+            // PARTIE GERANT L OPTION DES COLONNES FIXES
             
-    		//  Use the existing table to create a new table sharing
-    		//  the DataModel and ListSelectionModel
-
-    		int totalColumns = main.getColumnCount();
-
-    		// La Jtable fixed contiendra les colonnes fixes
-    		fixed = new JTable();
-    		fixed.setAutoCreateColumnsFromModel( false );
-    		fixed.setModel( main.getModel() );
-    		fixed.setSelectionModel( main.getSelectionModel() );
-    		fixed.setFocusable( false );
-    		
-    		
-    		
-    		//  Remove the fixed columns from the main table and add them to the fixed table
-    		for (int i = 0; i < nmbColumnToFixe; i++)
-    		{
-    	        TableColumnModel columnModel = main.getColumnModel();
-    	        TableColumn column = columnModel.getColumn( 0 );
-        	    columnModel.removeColumn( column );
-    			fixed.getColumnModel().addColumn( column );
-    		}
-
-    		
-    		//  Add the fixed table to the scroll pane
-
-            fixed.setPreferredScrollableViewportSize(fixed.getPreferredSize());
-    		scrollPane.setRowHeaderView( fixed );
-    		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixed.getTableHeader());
-
-    		
-
-    		scrollPane.getRowHeader().addChangeListener( this );
-    		
+            if ( nmbColumnToFixe > 0)
+            {
+	    		//  Use the existing table to create a new table sharing
+	    		//  the DataModel and ListSelectionModel
+	
+	    		int totalColumns = main.getColumnCount();
+	
+	    		// La Jtable fixed contiendra les colonnes fixes
+	    		fixed = new JTable();
+	    		fixed.setAutoCreateColumnsFromModel( false );
+	    		fixed.setModel( main.getModel() );
+	    		fixed.setSelectionModel( main.getSelectionModel() );
+	    		fixed.setFocusable( false );
+	    		
+	    		
+	    		
+	    		//  Remove the fixed columns from the main table and add them to the fixed table
+	    		for (int i = 0; i < nmbColumnToFixe; i++)
+	    		{
+	    	        TableColumnModel columnModel = main.getColumnModel();
+	    	        TableColumn column = columnModel.getColumn( 0 );
+	        	    columnModel.removeColumn( column );
+	    			fixed.getColumnModel().addColumn( column );
+	    		}
+	
+	    		
+	    		//  Add the fixed table to the scroll pane
+	
+	            fixed.setPreferredScrollableViewportSize(fixed.getPreferredSize());
+	    		scrollPane.setRowHeaderView( fixed );
+	    		scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixed.getTableHeader());
+	
+	    		
+	
+	    		scrollPane.getRowHeader().addChangeListener( this );
+	    		
+	            
+	            frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+            }
+            //______________________________________________________________________________________________________________________
+            // PARTIE GERANT L OPTION SANS COLONNES FIXES 
+            else
+            {
+            	frame.getContentPane().add(new JScrollPane(main), BorderLayout.CENTER);
+            }
             
-            frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+            //______________________________________________________________________________________________________________________
+            
+            
             frame.getContentPane().add(pan, BorderLayout.SOUTH);	                
             frame.pack();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -330,7 +346,9 @@ public class Udra_Lib_Display_modif implements ChangeListener, PropertyChangeLis
             
             frame.setVisible(true);  
        
-            	
+
+
+            
 	        
 	        while ( Windows_is_display  )
 	        {
