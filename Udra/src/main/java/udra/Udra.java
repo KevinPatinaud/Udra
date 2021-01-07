@@ -2814,7 +2814,31 @@ public String convertToHTMLTable ()
 	 * @param defaultValue
 	 * @return
 	 */
-	public boolean saveAsCSV(String URLFile , boolean deletePreviousFile , String ... defaultValue)
+	public boolean saveAsCSV(String URLFile)
+	{
+		return Udra_Lib_CSV.saveAsCSV(this, URLFile, true, "");
+	}
+	
+	
+	/**
+	 * @param URLFile
+	 * @param deletePreviousFile
+	 * @param defaultValue
+	 * @return
+	 */
+	public boolean saveAsCSV(String URLFile , boolean deletePreviousFile )
+	{
+		return Udra_Lib_CSV.saveAsCSV(this, URLFile, deletePreviousFile, "");
+	}
+	
+	
+	/**
+	 * @param URLFile
+	 * @param deletePreviousFile
+	 * @param defaultValue
+	 * @return
+	 */
+	public boolean saveAsCSV(String URLFile , boolean deletePreviousFile , String defaultValue)
 	{
 		return Udra_Lib_CSV.saveAsCSV(this, URLFile, deletePreviousFile, defaultValue);
 	}
