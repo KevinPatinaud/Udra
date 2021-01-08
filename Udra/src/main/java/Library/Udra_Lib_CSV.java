@@ -6,16 +6,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 import udra.Udra;
 
 public class Udra_Lib_CSV {
 
-	
-	public static boolean saveAsCSV( Udra udra_in , String URLFile , boolean deletePreviousFile , String ... defaultValue)
+
+	public static boolean saveAsCSV( Udra udra_in , String URLFile , boolean deletePreviousFile , String defaultValue, Charset charSet)
 	{
 		boolean FileExist;
+		ArrayList<String> lines = new ArrayList<String>();
 		
 		if ((new File(URLFile)).exists())
 			FileExist = true;
@@ -30,55 +37,65 @@ public class Udra_Lib_CSV {
 		}
 		
 		
-		FileWriter writer = null;
 		
-		try{
-	
-			  writer = new FileWriter(URLFile, true); 
-			
-				//if the file doesn't exist we will create him and write the title
-				if (!FileExist)
-				{
-					 for (int i = 0 ; i < udra_in.getTitle().size() ; i++) //print the title of each column
-					 {
-						 writer.write(udra_in.getTitle().get(i) + ";");
-					 }
-					 writer.write("\n");
-				}
-				
+		String titre = "";
+		
+		//if the file doesn't exist we will create him and write the title
+		if (!FileExist)
+		{
+			 for (int i = 0 ; i < udra_in.getTitle().size() ; i++) //print the title of each column
+			 {
+				 titre = titre + udra_in.getTitle().get(i) + ";";
+			 }
+			 lines.add(titre);
+		}
 				
 				
 		//write the document
-				 for (int row = 0 ; row < udra_in.sizeRow() ; row++) //print the content of table
+		 for (int row = 0 ; row < udra_in.sizeRow() ; row++) //print the content of table
+		 {
+			 String currentLine = "";
+			 for (int col = 0 ; col < udra_in.sizeColumn() ; col++)
+			 {
+				 if( udra_in.get(col, row) != null)
 				 {
-					 for (int col = 0 ; col < udra_in.sizeColumn() ; col++)
-					 {
-						 if( udra_in.get(col, row) != null)
-							 writer.write( udra_in.get(col, row).toString() );
-						 else if (defaultValue.length > 0)
-							 writer.write(defaultValue[0]);
-						 
-						 writer.write(";");
-					 }
-					 writer.write("\n");
+					 currentLine = currentLine +  udra_in.get(col, row).toString() ; 
 				 }
-				
-				
-				
-				
-				writer.close();	
+				 else if (defaultValue != null)
+				 {
+					 currentLine = currentLine +  defaultValue ; 
+				 }
+				 currentLine = currentLine + ";"; 
+			 }
+			 lines.add(currentLine);
+		 }
+		
+		
+        Path path = Paths.get(URLFile);
+        try {
+        	//si un encodage spécifique est passé en paramètre on l'utilise
+        	if ( charSet != null)
+        	{
+        		Files.write(path, lines, charSet); 
+        	}
+        	else
+        	{	
+        		Files.write(path, lines); 
+        	}
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 					
-		}catch(IOException ex){	}
 		
 
-		
 		return true;
 	}
 	
 	
 	
 	
-	public static boolean createFromCSVFile(  Udra udra_in , String FileName )
+	public static boolean createFromCSVFile(  Udra udra_in , String FileName, Charset charSet )
 	{
 		BufferedReader Buffer = null;
 	    String line;
@@ -87,16 +104,25 @@ public class Udra_Lib_CSV {
 	    
 	    try
 	      {
-	    	Buffer = new BufferedReader(new FileReader(FileName));
-	
-	    while ((line = Buffer.readLine()) != null)
-	    	textCSV.add(line);
-	    Buffer.close();
+
+	    	if (charSet != null)
+	    	{
+	    		Buffer = Files.newBufferedReader(Paths.get(FileName), charSet);
+	    	}
+	    	else
+	    	{
+	    		Buffer = new BufferedReader(new FileReader(FileName));
+	    	}
+
+		
+		    while ((line = Buffer.readLine()) != null)
+		    	textCSV.add(line);
+		    Buffer.close();
 
 	    
 	      }
-		    catch(Exception exc)
-		      {
+		   catch(Exception exc)
+		   {
 		    	return false;
 			}
 		    

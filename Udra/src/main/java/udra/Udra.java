@@ -21,6 +21,8 @@ import graphique.Drawing_Line_Udra;
 import graphique.Drawing_Pie_Udra;
 import graphique.Drawing_Relief_Map;
 import graphique.Drawing_Square_Udra;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 
 
 /**
@@ -2816,7 +2818,7 @@ public String convertToHTMLTable ()
 	 */
 	public boolean saveAsCSV(String URLFile)
 	{
-		return Udra_Lib_CSV.saveAsCSV(this, URLFile, true, "");
+		return saveAsCSV( URLFile, true);
 	}
 	
 	
@@ -2828,9 +2830,9 @@ public String convertToHTMLTable ()
 	 */
 	public boolean saveAsCSV(String URLFile , boolean deletePreviousFile )
 	{
-		return Udra_Lib_CSV.saveAsCSV(this, URLFile, deletePreviousFile, "");
+		return saveAsCSV( URLFile, deletePreviousFile, null);
 	}
-	
+
 	
 	/**
 	 * @param URLFile
@@ -2840,7 +2842,20 @@ public String convertToHTMLTable ()
 	 */
 	public boolean saveAsCSV(String URLFile , boolean deletePreviousFile , String defaultValue)
 	{
-		return Udra_Lib_CSV.saveAsCSV(this, URLFile, deletePreviousFile, defaultValue);
+		return saveAsCSV(URLFile, deletePreviousFile, defaultValue, null);
+	}
+
+
+	
+	/**
+	 * @param URLFile
+	 * @param deletePreviousFile
+	 * @param defaultValue
+	 * @return
+	 */
+	public boolean saveAsCSV(String URLFile , boolean deletePreviousFile , String defaultValue, Charset charSet)
+	{
+		return Udra_Lib_CSV.saveAsCSV(this, URLFile, deletePreviousFile, defaultValue, charSet);
 	}
 
 	
@@ -2851,7 +2866,18 @@ public String convertToHTMLTable ()
 	 */
 	public boolean createFromCSVFile(String FileName )
 	{
-		return Udra_Lib_CSV.createFromCSVFile(this, FileName);
+		return createFromCSVFile( FileName, null);
+	}
+
+	
+	
+	/**
+	 * @param FileName
+	 * @return
+	 */
+	public boolean createFromCSVFile(String FileName, Charset charSet )
+	{
+		return Udra_Lib_CSV.createFromCSVFile(this, FileName, charSet);
 	}
 	
 	
