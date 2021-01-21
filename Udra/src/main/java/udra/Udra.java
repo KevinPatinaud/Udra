@@ -15,6 +15,7 @@ import Library.Udra_Lib_JSON;
 import Library.Udra_Lib_Mail;
 import Library.Udra_Lib_SOAP;
 import Library.Udra_Lib_XML;
+import Statistic.Udra_stat_findBestCompetitor;
 import graphique.Udra_Pie_Panel;
 import graphique.Udra_Square_Panel;
 import graphique.Drawing_Line_Udra;
@@ -709,6 +710,20 @@ public Udra copyLine(int line)
 		
 	}
 	
+
+	
+	
+	
+	/**
+	 * @param Original
+	 * @param New
+	 */
+	public void changeTitle (int indexTitle , String New)
+	{
+		Title.set(indexTitle, New);
+		
+	}
+	
 	
 	/**
 	 * 
@@ -1365,6 +1380,19 @@ public Udra copyLine(int line)
 	
 	
 	
+	/****** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***** STAT ***/
+	
+
+	public Udra stats_calculateBestCompetitor(String colCompetitor, String colIdCourse, String colResultCourse, boolean smallerIsBetter)
+	{
+		return Udra_stat_findBestCompetitor.findbestCompetitor(this, this.get_the_index_of_title_from_his_Name(colCompetitor), this.get_the_index_of_title_from_his_Name(colIdCourse), this.get_the_index_of_title_from_his_Name(colResultCourse), smallerIsBetter);
+	}
+
+
+	public Udra stats_calculateBestCompetitor(int colCompetitor, int colIdCourse, int colResultCourse, boolean smallerIsBetter)
+	{
+		return Udra_stat_findBestCompetitor.findbestCompetitor(this, colCompetitor, colIdCourse, colResultCourse, smallerIsBetter);
+	}
 	
 	
 	
