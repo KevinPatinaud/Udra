@@ -214,7 +214,7 @@ public class SSH {
 
 		}
 
-		session.disconnect();
+	//	session.disconnect();
 
 	}
 	

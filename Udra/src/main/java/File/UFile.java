@@ -34,6 +34,7 @@ public class UFile {
 		for (int i = 0 ; i < listFile.sizeRow(); i++)
 		{
 			String remoteFile = listFile.getString(SSH.col_FullPath, i);
+			// System.out.println("download : " + remoteFile);
 			ssh.getFile(user, passWord, host, remoteFile, localDirectory + "/" + remoteFile.replaceAll(remoteDirectory, ""));
 		}
 	}
