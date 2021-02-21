@@ -17,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import udra.Udra;
-import udra.udra_value;
 
 public class Udra_Lib_Display {
 
@@ -101,8 +100,6 @@ public class Udra_Lib_Display {
 				if(columnIndex == 0)
 					return rowIndex;
 				
-				if( udra_in.get(columnIndex-1, rowIndex) instanceof udra_value)
-					return ((udra_value) udra_in.get(columnIndex-1, rowIndex)).display();
 					
 				return udra_in.get(columnIndex-1, rowIndex) ;
 			}

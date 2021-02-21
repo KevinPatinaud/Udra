@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import udra.Udra;
-import udra.udra_value;
 
 
 

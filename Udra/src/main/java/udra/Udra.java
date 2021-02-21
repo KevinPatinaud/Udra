@@ -3,8 +3,11 @@ import java.awt.Color;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import com.jcraft.jsch.JSchException;
+
 import BMP.FrameBMP;
 import BMP.Udra_BMP;
+import File.UFile;
 import Library.Udra_Lib_BDD;
 import Library.Udra_Lib_CSV;
 import Library.Udra_Lib_Display;
@@ -325,7 +328,24 @@ public Udra copyLine(int line)
 	
 	
 	
-	
+
+	public void add(Udra secondUdra) {
+		if (this.sizeColumn() == secondUdra.sizeColumn())
+		{
+			for (int i = 0 ; i < secondUdra.sizeRow(); i++)
+			{
+				this.insertALine();
+				for (int j = 0 ; j < secondUdra.sizeColumn(); j++)
+				{
+					this.setAvalue(j, this.sizeRow() - 1, secondUdra.get(j, i));
+				}
+			}
+		}
+		else
+		{
+			try {	throw new Exception("These two Udra cannot be added because their number of column are different");	}catch(Exception e) { e.printStackTrace(); }
+		}
+	}
 	
 	
 	///////////////////////////////////// Function of udra ////////////////////////////////////////////////////////////////////////////////////////
@@ -3176,6 +3196,58 @@ public String convertToHTMLTable ()
 		}
 		
 		return true;
+	}
+	
+	
+	
+	//***************************************************************************************************************************************************************************************************
+	//*** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ****** FILE ******
+	//***************************************************************************************************************************************************************************************************
+	
+	
+	
+	public Udra getContentServerDirectory(String user, String passWord, String host, String remoteDirectory)
+	{
+		Udra liste = null;
+		try {
+			 liste = UFile.getContentServerDirectory( user,  passWord,  host,  remoteDirectory);
+			 
+			 this.setTitle(liste.getTitle());
+			 while ( this.sizeRow() > 0)
+				 this.delete_row(0);
+			 
+			 for (int i = 0 ; i < liste.sizeRow() ; i++)
+			 {
+				 this.insertALine();
+				 for (int j = 0 ; j < liste.sizeColumn(); j++)
+				 {
+					 this.setAvalue(j, i, liste.get(j, i));
+				 }
+			 }
+			 
+		} catch (Exception e) {	e.printStackTrace();	}
+		return this;
+	}
+
+	
+	public static void getFileFromScpServer(String user, String passWord, String host, String remoteFile , String localFile)
+	{
+		try {
+			UFile.getFileFromScpServer( user,  passWord,  host,  remoteFile ,  localFile);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void get_Direcory_Recursively_From_Scp_Server(String user, String passWord, String host, String remoteDirectory , String localDirectory) 
+	{
+		try {
+			UFile.get_Direcory_Recursively_From_Scp_Server(user, passWord, host, remoteDirectory, localDirectory);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

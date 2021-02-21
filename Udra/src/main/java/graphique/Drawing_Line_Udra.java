@@ -30,7 +30,6 @@ import javax.swing.border.Border;
 
 import udra.Udra;
 
-import udra.udra_value;
 
 // Cette classe représente l'ensemble de la fenetre
 

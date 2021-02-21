@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="Udra/src/main/resources/xmlbeans.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/javax.mail-1.6.2.jar"/>
 	<classpathentry kind="lib" path="Udra/src/main/resources/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="Udra/src/main/resources/jsch-0.1.55.jar"/>
 	<classpathentry kind="output" path="Udra/target/classes"/>
 </classpath>
